@@ -30,3 +30,6 @@ models/
 # Scratch files
 *.log.tmp
 tmp/
+
+# Hugging Face upload folders (built locally, uploaded separately)
+hf_release/

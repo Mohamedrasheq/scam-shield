@@ -1,16 +1,18 @@
 # Scam Shield
 
-A small, open-source model that reads a text message and says **SCAM** or **SAFE**.
+An open-source model that reads a text message and says **SCAM** or **SAFE**.
 
 It is a fine-tuned [DistilBERT](https://huggingface.co/distilbert/distilbert-base-uncased) model trained on real scam reports from around the world, real everyday SMS, and written safe service messages (OTP codes, bank alerts, deliveries and more). It runs on a normal laptop, so messages never need to leave your device.
 
 **Version 1.0.0** · English only · Code: MIT · Data: CC BY 4.0
 
+**Model:** [rasheq/scam-shield-distilbert](https://huggingface.co/rasheq/scam-shield-distilbert) · **Dataset:** [rasheq/scam-shield-sms](https://huggingface.co/datasets/rasheq/scam-shield-sms)
+
 ```
-$ python predict.py "USPS: Your package is on hold. Update your address within 12 hours: usps-redeliver.top/track"
+$ python predict.py "USPS: Your package is on hold due to an incomplete address. Update within 12 hours: usps-redeliver.top/track"
 
 🚨 SCAM  (98% scam)
-  Model saw: USPS: Your package is on hold. Update your address within 12 hours: <URL>
+  Model saw: USPS: Your package is on hold due to an incomplete address. Update within 12 hours: <URL>
 ```
 
 ## Results
@@ -45,7 +47,7 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-The trained model is not stored in this repo (it is 256 MB). Either train it yourself (below, about 12 minutes on a laptop GPU), or download it from Hugging Face once it is published there.
+The trained model is not stored in this repo (it is 256 MB). `predict.py` downloads it automatically from Hugging Face the first time you run it, or you can train it yourself (below, about 12 minutes on a laptop GPU).
 
 ## Check messages
 
@@ -101,6 +103,7 @@ Spam (ads) is left out on purpose: the model answers "is this a scam?", not "is 
 - **Too suspicious of real alerts.** Real fraud alerts, password resets, bills due, salary credits and long bank notices can be flagged as scams.
 - **Long, multi-line messages** lean towards SCAM, because long safe messages are rare in the training data.
 - **Some scams slip through:** slow, friendly romance scams, and very short "account blocked, call this number" messages with no link.
+- **Sensitive to wording:** small changes in wording can flip the answer (for example, one rewording of a fake USPS "package on hold" message is called safe).
 - **Label noise:** about 10–20% of the public scam reports are real messages that users were unsure about.
 - **It is a helper, not a guarantee.** Never treat a SAFE result as proof that a message is safe.
 

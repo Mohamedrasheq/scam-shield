@@ -8,7 +8,8 @@ Usage:
 In the typing mode, a pasted message with several lines is checked as ONE message.
 Type q (or press Ctrl+D) to quit.
 
-Uses the fine-tuned model in models/scam-distilbert-run2 and the SAME cleaning as training
+Uses the fine-tuned model (local models/scam-distilbert-run2, or rasheq/scam-shield-distilbert v1.0.0
+from Hugging Face) and the SAME cleaning as training
 (text_utils.prepare), so links / phones / numbers become <URL>, <PHONE_NUMBER>, <NUMBER>.
 """
 
@@ -31,12 +32,18 @@ from text_utils import prepare
 logging.set_verbosity_error()
 logging.disable_progress_bar()
 
-MODEL_DIR = "models/scam-distilbert-run2"
+# Use the locally trained model if present, else download the released one from Hugging Face
+LOCAL_MODEL = "models/scam-distilbert-run2"
+HUB_MODEL, HUB_VERSION = "rasheq/scam-shield-distilbert", "v1.0.0"
 MIN_WORDS = 3   # same rule as training: shorter messages were removed, so the model can't judge them
 device = "mps" if torch.backends.mps.is_available() else "cuda" if torch.cuda.is_available() else "cpu"
 
-tokenizer = AutoTokenizer.from_pretrained(MODEL_DIR)
-model = AutoModelForSequenceClassification.from_pretrained(MODEL_DIR).to(device).eval()
+if os.path.isdir(LOCAL_MODEL):
+    source = {"pretrained_model_name_or_path": LOCAL_MODEL}
+else:
+    source = {"pretrained_model_name_or_path": HUB_MODEL, "revision": HUB_VERSION}
+tokenizer = AutoTokenizer.from_pretrained(**source)
+model = AutoModelForSequenceClassification.from_pretrained(**source).to(device).eval()
 
 
 def check(text):
