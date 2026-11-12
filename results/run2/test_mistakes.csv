@@ -1,0 +1,34 @@
+text,label,pred,scam_prob,source,scam_type
+Y'ello! Your 1GB MTN EverydayGigs Bundle has been loaded.,scam,safe,0.002344159409403801,imc2025,telecom
+Standard Bank App: OTP: <NUMBER>. Cash voucher created for <NUMBER>.00. Queries? <NUMBER>.,scam,safe,0.004022409673780203,imc2025,banking
+I'll call you later.,scam,safe,0.015051526948809624,imc2025,others
+"Cheese n Corn, Fresh Veggie",scam,safe,0.016253601759672165,imc2025,others
+Co m e to our post office to get your delivery package.,scam,safe,0.020725373178720474,imc2025,delivery
+Check out My App: <URL>,scam,safe,0.054831746965646744,imc2025,others
+GMAIL: Mailbox accessed from a new location or device. Wasn't you? Let us know: <URL>,scam,safe,0.10694162547588348,imc2025,others
+"Activate your Capitec account, Pay <NUMBER>.99 , Acc: <NUMBER> Branch <NUMBER> . Ref:<NUMBER> . :R 18? 521,01. Tel SSDA: <NUMBER>",scam,safe,0.11406495422124863,imc2025,banking
+OMLOG E UPS HUB GA,scam,safe,0.12678681313991547,imc2025,delivery
+"Ask for forgiveness from the Almighty God. He is the only one that gives and add no sorrows. Young man, save yourself while you still can.",scam,safe,0.18623217940330505,imc2025,others
+Y'ello! Get 1GB at <NUMBER>/- and enjoy MTN's home bundle. Dial *150* to buy using MoMo. Bundle valid . #FightCoronatogether. DND * .,scam,safe,0.2057071030139923,imc2025,telecom
+Hey Mum!!! I've got a new phone XXX,scam,safe,0.2636740505695343,imc2025,hey mum/dad
+"Saps test at elangeni fet college inanda ohlange on at 10.00 bring ID,pencil ruler eraser. Reply if you have written only",scam,safe,0.27838966250419617,imc2025,others
+So during another trip she now called and said network that she will do it I should resend my account number,scam,safe,0.290738970041275,imc2025,others
+Are you OK? Here's with work I just wanted this song Call Mmm mmm D C Xx,scam,safe,0.34674307703971863,imc2025,others
+Lily see the message and reply me Why are you so busy all the time don't you rest at night? 🍷😆:),scam,safe,0.4671066105365753,imc2025,wrong number
+Using a capital 'i' instead of a lower case l,scam,safe,0.47109469771385193,imc2025,others
+"UPSC CSE: 5 ways to stay ahead of your competition, Catch BYJU'S Exam Prep expert sir LIVE on 26Nov & know imp tips. Register <URL>",scam,safe,0.48053571581840515,imc2025,others
+Don’t get your heart broken by SMishing scams. The IRS will never text you.,scam,safe,0.4905312955379486,imc2025,government
+Your board is working fine. The issue of overheating is also reslove. But still software inst is pending. I will come around 8'o clock.,safe,scam,0.5183625221252441,mishra_soni,
+"Sir, I am waiting for your call I have an urgent meeting later on..",safe,scam,0.5212343335151672,mishra_soni,
+My tuition is at 330. Hm we go for the <NUMBER> to <NUMBER> one? Do you mind?,safe,scam,0.5660932660102844,mishra_soni,
+Are you willing to go for aptitude class.,safe,scam,0.6340259313583374,mishra_soni,
+Hope this text meets you smiling. If not then let this text give you a reason to smile. Have a beautiful day.,safe,scam,0.6446724534034729,mishra_soni,
+"Hi this is yijue, can i meet u at 11 tmr?",safe,scam,0.7019451856613159,mishra_soni,
+Re your call; You didn't see my facebook huh?,safe,scam,0.7110235691070557,mishra_soni,
+Hello handsome ! Are you finding that job ? Not being lazy ? Working towards getting back that net for mummy ? Where's my boytoy now ? Does he miss me ?,safe,scam,0.7614828944206238,mishra_soni,
+I'm good. Have you registered to vote?,safe,scam,0.8405304551124573,mishra_soni,
+Carry on not disturbing both of you,safe,scam,0.8456783294677734,mishra_soni,
+K and you're sure I don't have to have consent forms to do it :V,safe,scam,0.8535290360450745,mishra_soni,
+"Not for possession, especially not first offense",safe,scam,0.9450200796127319,mishra_soni,
+You see the requirements please,safe,scam,0.9980413913726807,mishra_soni,
+"Hi, Mobile no. <PHONE_NUMBER> has added you in their contact list on <URL> It s a great place to send free sms to people For more visit <URL>",safe,scam,0.9991596937179565,mishra_soni,

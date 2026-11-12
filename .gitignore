@@ -1,0 +1,32 @@
+# Python
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.ipynb_checkpoints/
+
+# Model weights (too big for GitHub; download from Hugging Face or rebuild with finetune.py)
+models/
+*.safetensors
+*.bin
+*.pt
+*.onnx
+
+# Hugging Face / tool caches
+.cache/
+
+# Editors and OS
+.DS_Store
+.vscode/
+.idea/
+*.swp
+
+# Secrets and local settings
+.env
+.env.*
+
+# Scratch files
+*.log.tmp
+tmp/

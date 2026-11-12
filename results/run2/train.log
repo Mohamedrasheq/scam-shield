@@ -1,0 +1,85 @@
+Device: mps
+Train:  17199 rows | scam 8527 | safe 8672
+Val  :   1531 rows | scam 1066 | safe 465
+Test :   1531 rows | scam 1066 | safe 465
+W1112 15:03:01.735000 77856 .venv/lib/python3.14/site-packages/torch/distributed/elastic/multiprocessing/redirects.py:35] NOTE: Redirects are currently not supported in MacOs.
+Loading weights:   0%|          | 0/100 [00:00<?, ?it/s]Loading weights: 100%|██████████| 100/100 [00:00<00:00, 7049.25it/s]
+[transformers] [1mDistilBertForSequenceClassification LOAD REPORT[0m from: models/distilbert-base-uncased
+Key                     | Status     | 
+------------------------+------------+-
+vocab_projector.bias    | UNEXPECTED | 
+vocab_transform.weight  | UNEXPECTED | 
+vocab_transform.bias    | UNEXPECTED | 
+vocab_layer_norm.bias   | UNEXPECTED | 
+vocab_layer_norm.weight | UNEXPECTED | 
+classifier.bias         | MISSING    | 
+classifier.weight       | MISSING    | 
+pre_classifier.weight   | MISSING    | 
+pre_classifier.bias     | MISSING    | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+- MISSING:	those params were newly initialized because missing from the checkpoint. Consider training on your downstream task.
+[transformers] The new embeddings will be initialized from a multivariate normal distribution that has old embeddings' mean and covariance. As described in this article: https://nlp.stanford.edu/~johnhew/vocab-expansion.html. To disable this, use `mean_resizing=False`
+  epoch 1 step 100/1075 | train loss 0.6634 | val loss 0.5289
+  epoch 1 step 200/1075 | train loss 0.3331 | val loss 0.2043
+  epoch 1 step 300/1075 | train loss 0.1869 | val loss 0.1666
+  epoch 1 step 400/1075 | train loss 0.1668 | val loss 0.1229
+  epoch 1 step 500/1075 | train loss 0.1490 | val loss 0.1178
+  epoch 1 step 600/1075 | train loss 0.1121 | val loss 0.1889
+  epoch 1 step 700/1075 | train loss 0.1224 | val loss 0.1100
+  epoch 1 step 800/1075 | train loss 0.0908 | val loss 0.1400
+  epoch 1 step 900/1075 | train loss 0.0999 | val loss 0.1064
+  epoch 1 step 1000/1075 | train loss 0.0841 | val loss 0.0904
+Epoch 1 | train loss 0.1923 | val loss 0.0935 | 170s
+Writing model shards:   0%|          | 0/1 [00:00<?, ?it/s]Writing model shards: 100%|██████████| 1/1 [00:00<00:00,  7.10it/s]Writing model shards: 100%|██████████| 1/1 [00:00<00:00,  7.07it/s]
+  saved best model -> models/scam-distilbert-run2
+  epoch 2 step 100/1075 | train loss 0.0460 | val loss 0.0906
+  epoch 2 step 200/1075 | train loss 0.0531 | val loss 0.0848
+  epoch 2 step 300/1075 | train loss 0.0455 | val loss 0.0960
+  epoch 2 step 400/1075 | train loss 0.0490 | val loss 0.0989
+  epoch 2 step 500/1075 | train loss 0.0390 | val loss 0.1115
+  epoch 2 step 600/1075 | train loss 0.0538 | val loss 0.1162
+  epoch 2 step 700/1075 | train loss 0.0351 | val loss 0.0734
+  epoch 2 step 800/1075 | train loss 0.0379 | val loss 0.0787
+  epoch 2 step 900/1075 | train loss 0.0624 | val loss 0.0956
+  epoch 2 step 1000/1075 | train loss 0.0373 | val loss 0.0840
+Epoch 2 | train loss 0.0464 | val loss 0.0834 | 168s
+Writing model shards:   0%|          | 0/1 [00:00<?, ?it/s]Writing model shards: 100%|██████████| 1/1 [00:00<00:00,  7.63it/s]Writing model shards: 100%|██████████| 1/1 [00:00<00:00,  7.62it/s]
+  saved best model -> models/scam-distilbert-run2
+  epoch 3 step 100/1075 | train loss 0.0142 | val loss 0.0903
+  epoch 3 step 200/1075 | train loss 0.0203 | val loss 0.1347
+  epoch 3 step 300/1075 | train loss 0.0178 | val loss 0.1047
+  epoch 3 step 400/1075 | train loss 0.0230 | val loss 0.1053
+  epoch 3 step 500/1075 | train loss 0.0228 | val loss 0.1298
+  epoch 3 step 600/1075 | train loss 0.0213 | val loss 0.0899
+  epoch 3 step 700/1075 | train loss 0.0127 | val loss 0.0890
+  epoch 3 step 800/1075 | train loss 0.0085 | val loss 0.1615
+  epoch 3 step 900/1075 | train loss 0.0231 | val loss 0.0917
+  epoch 3 step 1000/1075 | train loss 0.0140 | val loss 0.1386
+Epoch 3 | train loss 0.0186 | val loss 0.0919 | 166s
+  epoch 4 step 100/1075 | train loss 0.0092 | val loss 0.0840
+  epoch 4 step 200/1075 | train loss 0.0161 | val loss 0.0810
+  epoch 4 step 300/1075 | train loss 0.0056 | val loss 0.0923
+  epoch 4 step 400/1075 | train loss 0.0084 | val loss 0.0960
+  epoch 4 step 500/1075 | train loss 0.0085 | val loss 0.0952
+  epoch 4 step 600/1075 | train loss 0.0070 | val loss 0.0949
+  epoch 4 step 700/1075 | train loss 0.0098 | val loss 0.0971
+  epoch 4 step 800/1075 | train loss 0.0038 | val loss 0.0907
+  epoch 4 step 900/1075 | train loss 0.0026 | val loss 0.0917
+  epoch 4 step 1000/1075 | train loss 0.0071 | val loss 0.0948
+Epoch 4 | train loss 0.0075 | val loss 0.0947 | 167s
+Early stop: val loss stopped improving.
+Loading weights:   0%|          | 0/104 [00:00<?, ?it/s]Loading weights: 100%|██████████| 104/104 [00:00<00:00, 9261.70it/s]
+
+=== Test set (1531 real messages) ===
+accuracy         : 0.978
+precision        : 0.987
+recall           : 0.982
+f1               : 0.984
+false_alarm_rate : 0.030
+Scams caught 1047 of 1066 | Safe messages wrongly flagged 14 of 465
+
+Saved 33 mistakes -> results/run2/test_mistakes.csv
+Saved history -> results/run2/history.json
+Saved graph -> results/run2/results.png
