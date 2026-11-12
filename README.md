@@ -1,4 +1,4 @@
-# Scam Detector
+# Scam Shield
 
 A small, open-source model that reads a text message and says **SCAM** or **SAFE**.
 
