@@ -3,16 +3,21 @@ Split the cleaned data into train / validation / test.
 
 Rules:
   - Validation and test come ONLY from real messages (imc2025, mishra_soni).
-  - Synthetic messages go ONLY into training.
+  - Synthetic messages (synthetic, synthetic_v2) go ONLY into training.
   - Real messages: 80% train, 10% validation, 10% test, same scam/safe mix in each.
   - Fixed seed, so the split is the same every run.
+  - FROZEN val/test: if data/splits/val.csv and test.csv already exist, they are kept
+    (minus rows the cleaning removed), and all new data goes to train. This keeps scores
+    comparable between runs. Use --fresh to make a brand-new split.
 
 Input : data/processed/clean.csv
 Output: data/splits/train.csv, data/splits/val.csv, data/splits/test.csv
 
-Run: .venv/bin/python split_data.py
+Run: .venv/bin/python split_data.py           (keep val/test)
+     .venv/bin/python split_data.py --fresh   (new random split)
 """
 
+import sys
 from pathlib import Path
 
 import pandas as pd
@@ -22,20 +27,35 @@ SEED = 42
 OUT = Path("data/splits")
 
 df = pd.read_csv("data/processed/clean.csv", keep_default_na=False)
-real = df[df["source"] != "synthetic"]
-synthetic = df[df["source"] == "synthetic"]
+is_synthetic = df["source"].str.startswith("synthetic")
+real = df[~is_synthetic]
+synthetic = df[is_synthetic]
 print(f"Real: {len(real)} | Synthetic: {len(synthetic)}")
 
-# Stratify by label + source, so each split has the same mix
-strata = real["label"] + "_" + real["source"]
-real_train, rest = train_test_split(real, test_size=0.2, stratify=strata, random_state=SEED)
-val, test = train_test_split(rest, test_size=0.5, stratify=rest["label"] + "_" + rest["source"], random_state=SEED)
+def norm(texts):
+    return texts.str.lower().str.replace(r"\s+", " ", regex=True).str.strip()
+
+
+frozen = (OUT / "val.csv").exists() and (OUT / "test.csv").exists() and "--fresh" not in sys.argv
+if frozen:
+    # Keep the same val/test as before, so new runs are judged on the same messages
+    old_val = set(norm(pd.read_csv(OUT / "val.csv", keep_default_na=False)["text"]))
+    old_test = set(norm(pd.read_csv(OUT / "test.csv", keep_default_na=False)["text"]))
+    key = norm(real["text"])
+    val, test = real[key.isin(old_val)], real[key.isin(old_test)]
+    real_train = real[~key.isin(old_val | old_test)]
+    print(f"Frozen val/test kept: val {len(val)} (was {len(old_val)}), test {len(test)} (was {len(old_test)})")
+else:
+    # Stratify by label + source, so each split has the same mix
+    strata = real["label"] + "_" + real["source"]
+    real_train, rest = train_test_split(real, test_size=0.2, stratify=strata, random_state=SEED)
+    val, test = train_test_split(rest, test_size=0.5, stratify=rest["label"] + "_" + rest["source"], random_state=SEED)
 
 train = pd.concat([real_train, synthetic]).sample(frac=1, random_state=SEED)  # shuffle
 
 # Safety check: no message text appears in two splits
 def keys(frame):
-    return set(frame["text"].str.lower().str.replace(r"\s+", " ", regex=True).str.strip())
+    return set(norm(frame["text"]))
 
 overlap = {"train-val": len(keys(train) & keys(val)), "train-test": len(keys(train) & keys(test)),
            "val-test": len(keys(val) & keys(test))}

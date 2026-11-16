@@ -1,0 +1,24 @@
+text,label,pred,scam_prob,source,scam_type
+Check out My App: <URL>,scam,safe,0.00570365134626627,imc2025,others
+Hey Mum!!! I've got a new phone XXX,scam,safe,0.025119857862591743,imc2025,hey mum/dad
+Co m e to our post office to get your delivery package.,scam,safe,0.04389958456158638,imc2025,delivery
+Your BevMo! order is scheduled for delivery at 7:00-8:00pm Reply STOP to turn off SMS.,scam,safe,0.059743016958236694,imc2025,delivery
+Your order is ready for collection from ROCHDALE. Simply bring a copy of your email as proof of purchase. Thanks for shopping at,scam,safe,0.09225952625274658,imc2025,delivery
+Hi I'm making chicken curry at home . Do you want to come?,scam,safe,0.26996922492980957,imc2025,wrong number
+"Update:Hi from EE. As requested we've added an additional phone line to your account. If you didnt request this change, report it ASAP at <URL>",scam,safe,0.34958767890930176,imc2025,telecom
+Your Walmart order was delivered. Thanks for shopping with us! Reply HELP for info; STOP to opt out,scam,safe,0.35567229986190796,imc2025,delivery
+So during another trip she now called and said network that she will do it I should resend my account number,scam,safe,0.36357682943344116,imc2025,others
+"Dear Customer, charges for your PTCL connection <PHONE_NUMBER> are now Rs. 1,829. Keep enjoying High-Speed Internet. For information, call <NUMBER>.",scam,safe,0.3657304048538208,imc2025,telecom
+Your WhatsApp code:,scam,safe,0.4026487171649933,imc2025,others
+BOA: Your Online Profile has a probable association with a system vulnerability. Log in and verify your details at <URL> to prevent identity theft.,scam,safe,0.40368762612342834,imc2025,banking
+18 debited from your wallet.,scam,safe,0.47792959213256836,imc2025,others
+I don know account details..i will ask my mom and send you.my mom is out of reach now.,safe,scam,0.5074687004089355,mishra_soni,
+Not directly behind... Abt 4 rows behind ü...,safe,scam,0.5642528533935547,mishra_soni,
+"Not for possession, especially not first offense",safe,scam,0.5829086899757385,mishra_soni,
+Ofcourse I also upload some songs,safe,scam,0.6575387120246887,mishra_soni,
+Pls send me your address sir.,safe,scam,0.7744517922401428,mishra_soni,
+"Ola would get back to you maybe not today but I ve told him you can be his direct link in the US in getting cars he bids for online, you arrange shipping and you get a cut. Or U????? For a partnership where U????? Invest money for shipping and he takes care of the rest!U??Wud b self reliant soon dnt worry",safe,scam,0.805733859539032,mishra_soni,
+"Sir, I am waiting for your call I have an urgent meeting later on..",safe,scam,0.9107539653778076,mishra_soni,
+"Pls send me a comprehensive mail about who i'm paying, when and how much.",safe,scam,0.9496317505836487,mishra_soni,
+You see the requirements please,safe,scam,0.9556546211242676,mishra_soni,
+"Hi, Mobile no. <PHONE_NUMBER> has added you in their contact list on <URL> It s a great place to send free sms to people For more visit <URL>",safe,scam,0.9975718855857849,mishra_soni,

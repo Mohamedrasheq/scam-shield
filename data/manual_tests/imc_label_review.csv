@@ -1,0 +1,225 @@
+id,decision,reason,scam_prob,split,text
+0,drop,"real service message (OTP, receipt, order, bank/telecom notice)",0.003807088825851679,test,Standard Bank App: OTP: <NUMBER>. Cash voucher created for <NUMBER>.00. Queries? <NUMBER>.
+1,keep,"has a scam sign (link lure, money/code ask, impersonation, known scam template)",0.006226816680282354,train,AusPost: Delivery attempt on 25/5; your package is currently held at the post office. Track your parcel at <URL> for redelivery arrangements.
+2,drop,"real service message (OTP, receipt, order, bank/telecom notice)",0.008162392303347588,test,Y'ello! Your 1GB MTN EverydayGigs Bundle has been loaded.
+3,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.009061852470040321,train,Im only just home can I call you in the morning?
+4,keep,"has a scam sign (link lure, money/code ask, impersonation, known scam template)",0.010572978295385838,val,Commonwealth-Bank: Your is <NUMBER> for a purchase of 840.07 AUD to BUNNINGS. Not you? Please call us <PHONE_NUMBER>.
+5,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.010596503503620625,train,Been thnkin about ya .. Whut r ya up to?
+6,keep,"has a scam sign (link lure, money/code ask, impersonation, known scam template)",0.011855080723762512,train,Jocelynare you free these days? your wine has arrived
+7,drop,"not a scam at all (warning, insult, joke, comment about scams)",0.012615489773452282,train,do NOT go outside. that fucking cat just hung an anvil above your door so he can drop it on your head and squish you to be really short. be careful.
+8,drop,"not a scam at all (warning, insult, joke, comment about scams)",0.012998661957681179,train,Omg how are you? Are you still in the magic land of scamtopia? If you happen to find some dignity and self respect...let me know.
+9,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.013674008660018444,train,Didnot get my order
+10,drop,"not a scam at all (warning, insult, joke, comment about scams)",0.01386959571391344,train,"""The Diesel"" lost his law license. Hope all is well."
+11,keep,"has a scam sign (link lure, money/code ask, impersonation, known scam template)",0.013989254832267761,train,"Ay is this ? this is ... we txted on Coffee Meets Bagel last time I went up to visit my cousin but we didn't meet for drinks.. I'm back in the area right now if ya want 2 actually go out while I'm here, are ya up 2 it?"
+12,drop,"not a scam at all (warning, insult, joke, comment about scams)",0.018477939069271088,train,Not after . 'tis All Hallow's Eve and our Dark Lord will come for me to collect his tithe. I yearn to no longer be bound to my earthly constraints. To drink in His presence...
+13,keep,"has a scam sign (link lure, money/code ask, impersonation, known scam template)",0.019650118425488472,test,Check out My App: <URL>
+14,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.01975090801715851,train,I am lost in Thought i dont know what to eat kindly decide for me
+15,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.02039315737783909,train,"Hidayah, I haven't seen you for a long time, how are you, I am. ."
+16,keep,"has a scam sign (link lure, money/code ask, impersonation, known scam template)",0.021228976547718048,train,"Hey are u Demetrius? its . we spoke on PoF last time I went down to come see my cousin but we didn't meet for dinner.. I'm back in town 4 awhile if u want 2 for sure go out this time, r u free?"
+17,keep,"has a scam sign (link lure, money/code ask, impersonation, known scam template)",0.021481137722730637,train,I just / saw myself on a video... Did you ; upload something? <URL>
+18,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.02186288684606552,val,"This is , how arThis is , how are you doing Alisa?e you doing ?"
+19,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.022479264065623283,train,You 4got 2 call last nite after the bar:( I really hoped we would have a fun nite last nite.
+20,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.024832597002387047,val,"It's been a lil bit since u called, do u want me yet?"
+21,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.027825534343719482,train,call me now u r making me fool
+22,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.02884061634540558,train,"She was all mine , superior to anything else I've tried."
+23,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.030065178871154785,train,thank you. That was really a good and relaxing massage.
+24,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.030116982758045197,train,The spot I wanna hit close at dawn so it a b pointless to go fr
+25,drop,"real service message (OTP, receipt, order, bank/telecom notice)",0.03012610413134098,train,INTERAC:Service provider <NUMBER> inc Sent you $87.35
+26,keep,"has a scam sign (link lure, money/code ask, impersonation, known scam template)",0.031299568712711334,train,OMG 😢 - did you hear what happened with OPRA H?
+27,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.03152650594711304,train,fine fr no parking
+28,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.035986050963401794,val,", asked 2 send U that.."
+29,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.03636277839541435,train,I'm sorry no I ingat no my son
+30,drop,"not a scam at all (warning, insult, joke, comment about scams)",0.03745381906628609,train,Not interested just fuck off.
+31,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.03815514221787453,val,Can't talk now. What's up?
+32,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.0388653427362442,test,I'll call you later.
+33,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.03998250886797905,train,-)_ Can You Giive Mee Couple Of OrgAsM..
+34,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.04022365063428879,test,Lily see the message and reply me Why are you so busy all the time don't you rest at night? 🍷😆:)
+35,drop,"not a scam at all (warning, insult, joke, comment about scams)",0.04103764891624451,test,"Ask for forgiveness from the Almighty God. He is the only one that gives and add no sorrows. Young man, save yourself while you still can."
+36,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.041157837957143784,val,Are you OK ?
+37,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.04251080006361008,val,Honey I hope you don't forget our promise to go to church.
+38,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.04325650632381439,test,"Cheese n Corn, Fresh Veggie"
+39,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.04364446923136711,train,"don't make me fool, when you call me , as i have no miss single call."
+40,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.043819960206747055,val,I'll call you right back. I'll call you right back.
+41,drop,"not a scam at all (warning, insult, joke, comment about scams)",0.0446280911564827,train,Look who died ... 😞😢
+42,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.044958826154470444,train,All Night fakk All Night is f******
+43,keep,"has a scam sign (link lure, money/code ask, impersonation, known scam template)",0.046007126569747925,train,"honey, here's those pics I promised you. I hope u like them, msg <URL>"
+44,drop,"real service message (OTP, receipt, order, bank/telecom notice)",0.04724422097206116,train,Luno - Your password has been changed.
+45,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.04738831892609596,train,is here and so are t...
+46,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.05176348611712456,train,"Coach , I may not have time to go to the gym . Sorry!"
+47,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.05393296480178833,train,I've been waiting s...
+48,drop,"not a scam at all (warning, insult, joke, comment about scams)",0.05584393069148064,train,"Look who died, in an accident I think you know him so sorry..."
+49,keep,"has a scam sign (link lure, money/code ask, impersonation, known scam template)",0.05626292526721954,train,", we've made some changes to Lets take a look. <URL>"
+50,drop,"not a scam at all (warning, insult, joke, comment about scams)",0.06012079492211342,train,You're bored. Does your mother know you're like this?
+51,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.06112739443778992,train,My new brother so cute love this little boy
+52,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.06203923001885414,val,Please call him now anything that he says you let me know please
+53,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.06340470165014267,train,- you at the demo?
+54,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.0676300898194313,train,Did you lose your voice that you can never answer?
+55,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.06914859265089035,test,Are you OK? Here's with work I just wanted this song Call Mmm mmm D C Xx
+56,keep,"has a scam sign (link lure, money/code ask, impersonation, known scam template)",0.06945101916790009,train,i tried to send it to u before... <URL>
+57,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.07501836866140366,train,Are you busy now?
+58,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.07652577757835388,train,I'm really sorry. I dialed the wrong number. And I thought you were my friend. It was so embarrassing. Have .
+59,keep,"has a scam sign (link lure, money/code ask, impersonation, known scam template)",0.07783348113298416,train,"RM0 :Your payment M Y R 2,990.50 with card <NUMBER> at LAZADA was Successful. For Enquiry <NUMBER>."
+60,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.0794592797756195,train,look what i found ... 😂
+61,keep,"has a scam sign (link lure, money/code ask, impersonation, known scam template)",0.07981192320585251,train,Deli very of your c ori er goo ds
+62,drop,"real service message (OTP, receipt, order, bank/telecom notice)",0.07984302192926407,train,Your Shiny security code is <NUMBER>.
+63,drop,"real service message (OTP, receipt, order, bank/telecom notice)",0.08138812333345413,val,Thank you for ordering with Pizzahut. Please rating us at
+64,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.08175956457853317,val,Due to no safe place to le...
+65,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.08211454004049301,train,How are you doing
+66,drop,"real service message (OTP, receipt, order, bank/telecom notice)",0.08308720588684082,train,Your balance is almost R 0.00.
+67,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.08413393050432205,train,"New phone, who dis?"
+68,keep,"has a scam sign (link lure, money/code ask, impersonation, known scam template)",0.08520252257585526,train,Arriving aoon: Youd Amtzon Fresh qrder is next for deiivery. Details at <URL>
+69,drop,"not a scam at all (warning, insult, joke, comment about scams)",0.08574283868074417,train,What's orange and sounds like a parrot? A carrot. be vibrant and colorful!
+70,drop,"real service message (OTP, receipt, order, bank/telecom notice)",0.08673682808876038,train,Use <NUMBER> for two-factor authentication on Facebook.
+71,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.09063944965600967,train,"Oh, I saved number by mistake, hope you don't mind that"
+72,drop,"not a scam at all (warning, insult, joke, comment about scams)",0.09395057708024979,train,Hey you fucking bitch do you remember me? Im gonna come over now and beat the shit out of you
+73,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.09442028403282166,train,Hello JackWhat are you doing now? Do you still remember me?
+74,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.09582943469285965,train,Can I call you back later? Can I call you back later? Can't talk now. Can you call me later?
+75,drop,"real service message (OTP, receipt, order, bank/telecom notice)",0.09788627177476883,train,Costco: We want to thank you for being a valued shopper. Please take our 2 min poll so we can do even better for you in the future.
+76,keep,"has a scam sign (link lure, money/code ask, impersonation, known scam template)",0.09809613227844238,test,Hey Mum!!! I've got a new phone XXX
+77,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.09961441904306412,train,Happy to you and your family. 🦃 🦃.
+78,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.10119452327489853,train,Yes I used the first step where you sent me the link that's what I used
+79,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.10172012448310852,train,<URL> doesn't even load now
+80,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.10535254329442978,train,Ve ry i info r matio n
+81,keep,"has a scam sign (link lure, money/code ask, impersonation, known scam template)",0.10785084962844849,train,'s Biggest Give-Away Ever!
+82,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.10794143378734589,train,HiGood have you had dinner? Come out for dinner Are You still busy Now?⭐️ ;)
+83,keep,"has a scam sign (link lure, money/code ask, impersonation, known scam template)",0.1086583137512207,train,Congratulations! You could qualif...
+84,drop,"real service message (OTP, receipt, order, bank/telecom notice)",0.1088310107588768,val,Your Amazon Prime membership is renewed for i Rs 999. This amount will be charged on your bill.
+85,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.1126524806022644,train,Happy Thanksgiving and family
+86,drop,"not a scam at all (warning, insult, joke, comment about scams)",0.1133030503988266,train,The happiness of a nation lies in valuing the girl child. !
+87,keep,"has a scam sign (link lure, money/code ask, impersonation, known scam template)",0.11368044465780258,train,. This 's phone right? Just saw scoot off with a cool MOM.. I snapped a video:
+88,drop,"not a scam at all (warning, insult, joke, comment about scams)",0.11560806632041931,train,Is the airdrop real ?
+89,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.11770964413881302,train,I'm busy right now. Please call me later.
+90,keep,"has a scam sign (link lure, money/code ask, impersonation, known scam template)",0.11793933808803558,train,Account notification: The password for your Google account <EMAIL_ADDRESS> was recently changed <URL>
+91,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.12093326449394226,train,Wanna Hangout.pptx
+92,keep,"has a scam sign (link lure, money/code ask, impersonation, known scam template)",0.12166575342416763,train,Have you heard about <URL>?
+93,drop,"real service message (OTP, receipt, order, bank/telecom notice)",0.12223473936319351,val,"Hi Brijesh, thanks for your purchase of Rs. 248.00 from smart productshop! We'll notify you when it ships. (#<NUMBER>): <URL>"
+94,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.12293164432048798,train,Hey. when are you picking me up?
+95,keep,"has a scam sign (link lure, money/code ask, impersonation, known scam template)",0.1263091117143631,test,Co m e to our post office to get your delivery package.
+96,drop,"real service message (OTP, receipt, order, bank/telecom notice)",0.12949444353580475,train,Account: <NUMBER> is your Samsung account verification code.
+97,drop,"real service message (OTP, receipt, order, bank/telecom notice)",0.13034120202064514,train,"Dear customer, your new savings bank account number XX2342433XX has been opened successfully. Your ATM card will be ready for collection."
+98,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.13149450719356537,train,"Long time no see, how are you doing?"
+99,drop,"real service message (OTP, receipt, order, bank/telecom notice)",0.13352631032466888,train,Your 6-digit security code is <NUMBER>.
+100,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.13649730384349823,train,class is starting call me If you want to attend the class
+101,keep,"has a scam sign (link lure, money/code ask, impersonation, known scam template)",0.14601242542266846,train,Hey mum whatsapp me asap on tis number x
+102,drop,"real service message (OTP, receipt, order, bank/telecom notice)",0.1472940444946289,train,Hi! Welcome To Kotak 811 Start Using New ZERO BALANCE Savings Account In The Next Few Minutes. Click <URL>
+103,keep,"has a scam sign (link lure, money/code ask, impersonation, known scam template)",0.14750832319259644,train,Evri: Your order 2A7178 is at your local depot since nobody answered. Book via:
+104,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.15637023746967316,train,"I've been meaning to get in touch with you for a while, but haven't found a reason."
+105,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.15883666276931763,test,OMLOG E UPS HUB GA
+106,drop,"real service message (OTP, receipt, order, bank/telecom notice)",0.1594427078962326,train,Order confirmed: You can add more items until we start packing your Amazon Fresh order.
+107,keep,"has a scam sign (link lure, money/code ask, impersonation, known scam template)",0.16095127165317535,train,"heey, how u been? mentioned you are getting into the crypto game, it has been good for me. so here is link told u about <URL>"
+108,drop,"not a scam at all (warning, insult, joke, comment about scams)",0.1611790657043457,train,oSAMA bIn IADEN iS oUR gOD jOIN hANDS wITH tERRORISM
+109,drop,"not a scam at all (warning, insult, joke, comment about scams)",0.1646905243396759,train,What's wrong with you
+110,drop,"real service message (OTP, receipt, order, bank/telecom notice)",0.16622410714626312,train,Lots of students just joined Georgia State University's official community on ZeeMee. The group chat is wild! Come check it out!
+111,drop,"not a scam at all (warning, insult, joke, comment about scams)",0.16790825128555298,test,Fuck you scammer! I'll find you and I'm coming for you. 💀
+112,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.16813375055789948,train,", long time no see, how are you?"
+113,drop,"real service message (OTP, receipt, order, bank/telecom notice)",0.16921070218086243,train,Get the LinkedIn app: <URL>
+114,drop,"not a scam at all (warning, insult, joke, comment about scams)",0.170662060379982,test,Using a capital 'i' instead of a lower case l
+115,keep,"has a scam sign (link lure, money/code ask, impersonation, known scam template)",0.1729564070701599,train,": BUY FUNNY SOFTWARE LTD BSE CODE - <NUMBER>, CMP 9.38 TGT 12 SL 8 . TIME HORIZON 7 DAYS . BUY IN BULK."
+116,drop,"not a scam at all (warning, insult, joke, comment about scams)",0.17371128499507904,test,The IRS will never text you.
+117,keep,"has a scam sign (link lure, money/code ask, impersonation, known scam template)",0.17763030529022217,train,You've been chosen!
+118,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.179300457239151,train,"Ok sorry play don't share, any details"
+119,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.17953670024871826,train,", I wanted to share this with you before"
+120,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.1800576001405716,train,Do you received Hey men do you got it
+121,keep,"has a scam sign (link lure, money/code ask, impersonation, known scam template)",0.1802721917629242,train,WIDGET FINANCIAL: $477.80 Was Charged On Your Card Via <URL>RT. On . If You Dont Recognize Visit <URL> To Verify Access.
+122,drop,"real service message (OTP, receipt, order, bank/telecom notice)",0.18290908634662628,test,Order confirmed: You can add more items until we START packing your order.
+123,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.18326084315776825,train,"Hey, Anne how's it going so far?"
+124,drop,"real service message (OTP, receipt, order, bank/telecom notice)",0.18579840660095215,train,'47: It's National Dog Day! 10% of dog hat sales support Sweet Paws Rescue. Now with more breeds. Find your dog
+125,drop,"not a scam at all (warning, insult, joke, comment about scams)",0.18612226843833923,train,You should communicate better. Your name alone doesn’t tell me anything. I receive tens of messages.
+126,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.18671530485153198,train,Thanks for your order. Your token number is <URL>
+127,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.1921929270029068,train,",i ordered dubizzle delivery"
+128,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.1941373497247696,train,I'm sorry to have bothered you and if no one has told you before please keep a clear head every day no matter what comes your way.
+129,keep,"has a scam sign (link lure, money/code ask, impersonation, known scam template)",0.1968352347612381,train,😳Is it you in the video 😳
+130,drop,"real service message (OTP, receipt, order, bank/telecom notice)",0.19770589470863342,train,It?s Official – You get India?s Best Video Experience with Airtel. Try it out on your smart phone .
+131,keep,"has a scam sign (link lure, money/code ask, impersonation, known scam template)",0.19802458584308624,train,Binance:Secondo le normative locali si prega di aggiornare web3.0 prima del 4 maggio. In congelato
+132,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.19971854984760284,train,Do you have to talk? 😊🥰❤️
+133,keep,"has a scam sign (link lure, money/code ask, impersonation, known scam template)",0.20264558494091034,test,", | need to know if you are available in a split second. | am at a meeting and limited to calls, but |am good to go with texts if that works. Need you to handle a task. Thanks"
+134,drop,"not a scam at all (warning, insult, joke, comment about scams)",0.20285557210445404,val,Don’t they create jobs in your country?
+135,keep,"has a scam sign (link lure, money/code ask, impersonation, known scam template)",0.20348453521728516,val,CommBank: Use code <NUMBER> to finalise your purchase of 850.30 AUD to AIRBNB. If this was not you please call us on <PHONE_NUMBER>. REF COM898
+136,keep,"has a scam sign (link lure, money/code ask, impersonation, known scam template)",0.2043433040380478,train,Try that . voice messenger app so we can talk <URL>
+137,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.20443189144134521,train,", what are your plans for ?"
+138,keep,"has a scam sign (link lure, money/code ask, impersonation, known scam template)",0.20709866285324097,train,"Hi are u Johan? it's .. we msged on Coffee Meets Bagel before when I came down to hang with my grandmother but we never connected irl,, Im back in the area if ya want 2 truly go out while I'm here, r ya up for it?"
+139,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.20850124955177307,train,Hey there! I am using WhatsApp.
+140,drop,"not a scam at all (warning, insult, joke, comment about scams)",0.21161679923534393,train,"STAY ALERT! Just because True callers ID says ""Safaricom customer care,"" does not mean that's who's calling. Do not follow instructions from such callers."
+141,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.21613384783267975,train,", I'm almost at your house. What section do you live in?"
+142,drop,"real service message (OTP, receipt, order, bank/telecom notice)",0.21731089055538177,test,"Off Road Warehouse: Hey there! We hope to see you soon at our ORW! Just a reminder, we are open PST and 9am-3pm PST! Looking for help? Give us a call at <PHONE_NUMBER>! Get directions: <URL>"
+143,drop,"not a scam at all (warning, insult, joke, comment about scams)",0.21801476180553436,train,I’ve been pwned
+144,drop,"not a scam at all (warning, insult, joke, comment about scams)",0.22614379227161407,train,Together we can make SMS messaging a little less dangerous. So that spoofed messages like this don't fool us.
+145,drop,"real service message (OTP, receipt, order, bank/telecom notice)",0.22663962841033936,val,"Namaskaram, culminates his motorcycle journey to at Coimbatore. Watch the action live on 21 Jun, : <URL>"
+146,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.22774994373321533,train,It’s me jiyong
+147,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.22873111069202423,train,Do you have time to go shopping for some food with me ?
+148,drop,"real service message (OTP, receipt, order, bank/telecom notice)",0.23248934745788574,train,"Order Packed: Hi , your Vlebazaar order containing Mavis 350 Nylon Shuttlecock.. is packed. Powered by ."
+149,drop,"not a scam at all (warning, insult, joke, comment about scams)",0.23288123309612274,test,Don’t get your heart broken by SMishing scams. The IRS will never text you.
+150,drop,"real service message (OTP, receipt, order, bank/telecom notice)",0.2367740273475647,train,"AlaskaAir: Check in now at <URL> confirmation code MAHYYH, and use your smartphone as your boarding pass. Replying STOP will end all critical flight comms."
+151,drop,"not a scam at all (warning, insult, joke, comment about scams)",0.2523159086704254,test,"Wow! Astonishingly, first these fraudsters call you and when you catch their lie, they start abusing you"
+152,drop,"real service message (OTP, receipt, order, bank/telecom notice)",0.25624731183052063,train,"'s shift is up for grabs: am (server) on Wed, Jul 5, ."
+153,drop,"real service message (OTP, receipt, order, bank/telecom notice)",0.2620126008987427,train,Your Netflix verification code is <NUMBER>.
+154,keep,"has a scam sign (link lure, money/code ask, impersonation, known scam template)",0.26638588309288025,train,Microsoft: Someone else might have accessed <EMAIL_ADDRESS>. Recover at <URL>
+155,drop,"real service message (OTP, receipt, order, bank/telecom notice)",0.268559992313385,test,Arriving : Your Amazon Fresh order for delivery.
+156,drop,"not a scam at all (warning, insult, joke, comment about scams)",0.27415135502815247,train,Do you think it's strange that a woman you do not know is texting you?
+157,drop,"not a scam at all (warning, insult, joke, comment about scams)",0.2779849171638489,train,This is the wrong number
+158,keep,"has a scam sign (link lure, money/code ask, impersonation, known scam template)",0.28154075145721436,train,"myGOV: The epidemic compensation for employees whose salary lower than $5,000 is available NOW. Fill up the form to check your eligibility."
+159,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.2903120219707489,train,hey i'm town again I'm here for the holiday break we should definitely get together while i'm out here
+160,keep,"has a scam sign (link lure, money/code ask, impersonation, known scam template)",0.29126834869384766,train,From ASB: A new Nokia <NUMBER> has been registered on your ASB app. Not you? Please visit
+161,keep,"has a scam sign (link lure, money/code ask, impersonation, known scam template)",0.295204222202301,val,"Your card has been charged $268.00 for the shipping of your MAOSHINE 24"" Caged Ceiling Fan with Lights. Call assistance at <PHONE_NUMBER> on 05/May/<NUMBER>"
+162,keep,"has a scam sign (link lure, money/code ask, impersonation, known scam template)",0.30785664916038513,train,You.r pa.yment for <URL>.t was receive.d. Thank yo.u! her.e is a small r.e Ward for yo.u:
+163,drop,"real service message (OTP, receipt, order, bank/telecom notice)",0.31288468837738037,train,is your Disney+ verification code. Enjoy watching! /wAX/OsgZgE. . . dCRwhgn0EbyyU
+164,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.3141823410987854,val,"My work is too much , I can't go to the gym with you, I hope you don't get mad at me"
+165,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.3144158124923706,train,Good morning. Are you free on ? I invite you to dinner.
+166,keep,"has a scam sign (link lure, money/code ask, impersonation, known scam template)",0.3175591826438904,train,Evri: Your order 2A728 is waiting at your local depot as nobody answered. To book a slot visit: <URL>
+167,keep,"has a scam sign (link lure, money/code ask, impersonation, known scam template)",0.32447004318237305,train,Mum my screeens gone after I dropped my phone could you messsage my new numb <NUMBER>
+168,keep,"has a scam sign (link lure, money/code ask, impersonation, known scam template)",0.3247911334037781,test,Hope you still have this house available on facebook because i really want it so bad! https
+169,keep,"has a scam sign (link lure, money/code ask, impersonation, known scam template)",0.33086252212524414,train,"Hey mum, my phone has water damage. That is why i have this temporary number. It felt in my sink😞 how are you doing?"
+170,drop,"not a scam at all (warning, insult, joke, comment about scams)",0.33167165517807007,val,I missed a call from this number who are you looking for?
+171,keep,"has a scam sign (link lure, money/code ask, impersonation, known scam template)",0.3332497477531433,train,67 people from school shared photos💥🍒: <URL>
+172,drop,"real service message (OTP, receipt, order, bank/telecom notice)",0.33711811900138855,test,Hi cancellation for My SIM 1 has been successfully scheduled for end of this month and your final payment for this SIM will be processed on your selected date . To retract cancellation sign into my-rain on your rain app or go to <URL>. Thanks rain.
+173,drop,"real service message (OTP, receipt, order, bank/telecom notice)",0.3387238085269928,train,"Hello! Your request for SIM with reference number DEL-<NUMBER> is registered. Your request will be processed by 07 Sep 20 . For further assistance, dial 199."
+174,drop,"real service message (OTP, receipt, order, bank/telecom notice)",0.34554725885391235,test,Packed: Your Rajdhani Chakki Fresh ...+11 items have been packed. Track here <URL>
+175,keep,"has a scam sign (link lure, money/code ask, impersonation, known scam template)",0.3476822078227997,train,SANTANDER: On 15/05 you added a new device to your account. If ...
+176,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.3572447597980499,train,ohh sorry i must made a mistake and enter the wrong number hope i didn't bother you because I'm
+177,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.35725393891334534,train,", I'm , how have you been, I'm back in ."
+178,keep,"has a scam sign (link lure, money/code ask, impersonation, known scam template)",0.3604556918144226,train,Hey It was planned to arrive for you >>>
+179,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.36497217416763306,train,11 voted via the official App!
+180,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.3712879419326782,test,FRM:ampbell SUBJ:the shadedEvie and MSG: kn6wde Please wait...
+181,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.3738478124141693,val,"How was your day? Hey, ! Do you remember me? I'm"
+182,keep,"has a scam sign (link lure, money/code ask, impersonation, known scam template)",0.37403273582458496,train,Do Hey It looks like we live really close. Check me out <URL> Lets chat and maybe meet up soon. Talk soon
+183,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.37601178884506226,train,admitted ELDORET HOSPITAL
+184,drop,"real service message (OTP, receipt, order, bank/telecom notice)",0.3816854953765869,train,<URL>: Will you take a 2-question survey about the elections ? Your answers will inform the way we talk to other voters. Reply Y.
+185,drop,"real service message (OTP, receipt, order, bank/telecom notice)",0.3845931589603424,train,"Hi, <NUMBER> is your on <URL>. Pl"
+186,drop,"real service message (OTP, receipt, order, bank/telecom notice)",0.38683706521987915,val,is OTP for txn of INR <NUMBER>.00 at HOME CREDIT Gurgaon on ICICI Bank Debit Card <NUMBER>.OTPs are SECRET. DO NOT disclose it to anyone. Bank NEVER asks for .
+187,drop,"real service message (OTP, receipt, order, bank/telecom notice)",0.38993245363235474,val,SHARE <NUMBER> is the for your OlaMo...
+188,keep,"has a scam sign (link lure, money/code ask, impersonation, known scam template)",0.392600417137146,train,- parcel status: on the way. Go> <URL>
+189,keep,"has a scam sign (link lure, money/code ask, impersonation, known scam template)",0.39492279291152954,train,"Rm0:Your C.c ending with <NUMBER> was charged <NUMBER>.50 AT SHOPEE.IF NOT USE, CAll M. B. B"
+190,keep,"has a scam sign (link lure, money/code ask, impersonation, known scam template)",0.3951185345649719,test,"for joining is passed in our company . Can get 3,000/ Day."
+191,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.39597806334495544,train,Hi Mumthe anniversary is over its now since I lost hope GOD will give me a lovingcaring to my kids. I hope my son&daughter are doing well
+192,drop,"real service message (OTP, receipt, order, bank/telecom notice)",0.39637497067451477,train,McDonald's : Your Order number is 381. Your receipt for the same from Mcdonald'S Sarsan for Rs. <NUMBER>.94 can be viewed from the following link
+193,keep,"has a scam sign (link lure, money/code ask, impersonation, known scam template)",0.396793007850647,test,GMAIL: Mailbox accessed from a new location or device. Wasn't you? Let us know: <URL>
+194,drop,"not a scam at all (warning, insult, joke, comment about scams)",0.40166062116622925,train,See anything unusual? Stop and dial
+195,drop,"real service message (OTP, receipt, order, bank/telecom notice)",0.40386998653411865,test,Hi referral benefit amount of Rs.300 has been credited to your Tata Play account.
+196,drop,"real service message (OTP, receipt, order, bank/telecom notice)",0.404267281293869,train,jjewk|iy is your code to reset your Twitter password. Don't reply to this message with your code.
+197,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.4047006070613861,train,"Hi Dear 7042XXXX87, ..."
+198,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.4075354337692261,train,Hi i am . How are you today ? 😊❤️
+199,keep,"has a scam sign (link lure, money/code ask, impersonation, known scam template)",0.40820568799972534,train,Mr. told me that you have a Ferrari for sale. I really like the car and I thought we could talk
+200,drop,"real service message (OTP, receipt, order, bank/telecom notice)",0.40977025032043457,train,TECSIDEL: Your vehicle HR66B4294 TAG used at ayanagar. Charges: 100.00 Thanks
+201,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.4153565466403961,train,Hey there! I am using
+202,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.4223044216632843,train,Hey man you forgot my drink at the stuffed potato factory I already have spoken with them. I will take away your tip.
+203,keep,"has a scam sign (link lure, money/code ask, impersonation, known scam template)",0.4368123412132263,train,WTF... Actually she done it?? I won't process such action from them.. will be in contact. Here the documents <URL>
+204,drop,"real service message (OTP, receipt, order, bank/telecom notice)",0.4368840157985687,train,your SMS code: <PHONE_NUMBER>
+205,drop,"not a scam at all (warning, insult, joke, comment about scams)",0.4383937418460846,train,Oh this is from MIDF?
+206,keep,"has a scam sign (link lure, money/code ask, impersonation, known scam template)",0.44047847390174866,train,Hey baby I hope you're not shy;) because I'm DYING to swap sexy pics with you! I love to relax with pretty fellows like you are.
+207,keep,"has a scam sign (link lure, money/code ask, impersonation, known scam template)",0.44396528601646423,test,So during another trip she now called and said network that she will do it I should resend my account number
+208,keep,"has a scam sign (link lure, money/code ask, impersonation, known scam template)",0.4460589587688446,train,Your couri i er a rrived! <URL>
+209,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.4477240741252899,train,"The good news is that I'll be returning to soon, and I'm looking forward to the day you pick me up at the airport"
+210,keep,"has a scam sign (link lure, money/code ask, impersonation, known scam template)",0.4549250304698944,train,", I'm , When will the wine I ordered arrive? Please give me an answer."
+211,drop,"real service message (OTP, receipt, order, bank/telecom notice)",0.4581867456436157,train,"Your HDFC Netbanking login code is <NUMBER>. If you did not ask for it, please visit <URL>"
+212,drop,"real service message (OTP, receipt, order, bank/telecom notice)",0.45863693952560425,train,We are only one drop away. We should be with you by 16:03 and will let you know if there are any problems. Tracking
+213,keep,"has a scam sign (link lure, money/code ask, impersonation, known scam template)",0.4654914438724518,train,Wells Attention for Go to <URL>
+214,drop,"real service message (OTP, receipt, order, bank/telecom notice)",0.465864360332489,train,", just a friendly reminder that you are due for dental cleaning, would you like to schedule an appointment? Please reply YES or NO or give us a call back at <PHONE_NUMBER>. Thank you and have a great day. -Otay Lakes Dental"
+215,drop,"real service message (OTP, receipt, order, bank/telecom notice)",0.4658660590648651,train,"Dear AJIT , Your vaccination is scheduled for <PHONE_NUMBER>:00AM-11:00AM at UPHC Makanpur . - CoWIN"
+216,drop,"real service message (OTP, receipt, order, bank/telecom notice)",0.4753384590148926,train,Higher rates of in your area. Get tested if you have symptoms. Book a test at <URL> or call 119
+217,keep,"has a scam sign (link lure, money/code ask, impersonation, known scam template)",0.4782785475254059,test,IT'S MY PLEASURE TO PARTNER WITH YOU IN ...
+218,drop,"too vague to judge from the text (plain chat, cut off, garbled)",0.4797002971172333,train,I think I'm going to take care of my skin do you want to accompany me?
+219,drop,"real service message (OTP, receipt, order, bank/telecom notice)",0.4840136170387268,train,is your Facebook login code.
+220,keep,"has a scam sign (link lure, money/code ask, impersonation, known scam template)",0.4845393896102905,train,Tap the link to read the updated policy.
+221,keep,"has a scam sign (link lure, money/code ask, impersonation, known scam template)",0.48519545793533325,train,"Nlb: V your account a new connection has been detected. If it wasn't you, please check your account! <URL>"
+222,keep,"has a scam sign (link lure, money/code ask, impersonation, known scam template)",0.4924640357494354,train,"Hi honey, heres the selfies I forgot to send to you. I hope u like them, msg <URL>"
+223,drop,"real service message (OTP, receipt, order, bank/telecom notice)",0.49354636669158936,train,Eskom Online AMT: <NUMBER>.00 UNITS: 0.00 FBE UNITS: 100.00

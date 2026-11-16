@@ -29,7 +29,7 @@ KEEP_TAGS = ["URL", "PHONE_NUMBER", "EMAIL_ADDRESS", "NUMBER"]
 
 EMAIL = re.compile(r"\b[\w.+-]+@[\w-]+\.[\w.]+\b")
 URL = re.compile(r"(https?://\S+|www\.\S+|\b[\w-]+(\.[\w-]+)*\.(com|net|org|co|uk|info|xyz|top|ly|do|me|io|"
-                 r"biz|us|ca|au|shop|online|site|live|app|link|club|vip|cc|tk|ml|ga|gl|gd|ws)\b(/\S*)?)", re.I)
+                 r"biz|us|ca|au|shop|online|site|live|app|link|club|vip|cc|tk|ml|ga|gl|gd|ws|example)\b(/\S*)?)", re.I)
 PHONE = re.compile(r"(?<![\w<])\+?\d[\d\s().-]{6,}\d(?![\w>])")
 LONGNUM = re.compile(r"(?<![\w<])\d{4,}(?![\w>])")
 

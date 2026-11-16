@@ -7,10 +7,10 @@ Data (made by clean_data.py -> split_data.py):
   data/splits/test.csv    real only, LOCKED          -> final score, used once at the end
 
 Outputs:
-  models/scam-distilbert-run2/           best fine-tuned model + tokenizer
-  results/run2/history.json              losses, scores, settings
-  results/run2/test_mistakes.csv         every wrong test message
-  results/run2/results.png               one combined results graph (needs matplotlib)
+  models/scam-distilbert-run4/           best fine-tuned model + tokenizer
+  results/run4/history.json              losses, scores, settings
+  results/run4/test_mistakes.csv         every wrong test message
+  results/run4/results.png               one combined results graph (needs matplotlib)
 
 Run: .venv/bin/python finetune.py
 """
@@ -24,7 +24,7 @@ import torch
 from sklearn.metrics import accuracy_score, confusion_matrix, f1_score, precision_score, recall_score
 from transformers import AutoModelForSequenceClassification, AutoTokenizer, get_linear_schedule_with_warmup
 
-RUN = "run2"
+RUN = "run4"
 # Pretrained base model: use a local copy if present, else download from Hugging Face
 BASE_MODEL = ("models/distilbert-base-uncased" if Path("models/distilbert-base-uncased").exists()
               else "distilbert/distilbert-base-uncased")
