@@ -8,7 +8,7 @@ Usage:
 In the typing mode, a pasted message with several lines is checked as ONE message.
 Type q (or press Ctrl+D) to quit.
 
-Uses the fine-tuned model (local models/scam-distilbert-run4, or rasheq/scam-shield-distilbert v1.0.0
+Uses the fine-tuned model (local models/scam-distilbert-run4, or rasheq/scam-shield-distilbert v1.1.0
 from Hugging Face) and the SAME cleaning as training
 (text_utils.prepare), so links / phones / numbers become <URL>, <PHONE_NUMBER>, <NUMBER>.
 """
@@ -34,7 +34,7 @@ logging.disable_progress_bar()
 
 # Use the locally trained model if present, else download the released one from Hugging Face
 LOCAL_MODEL = "models/scam-distilbert-run4"
-HUB_MODEL, HUB_VERSION = "rasheq/scam-shield-distilbert", "v1.0.0"
+HUB_MODEL, HUB_VERSION = "rasheq/scam-shield-distilbert", "v1.1.0"
 MIN_WORDS = 3   # same rule as training: shorter messages were removed, so the model can't judge them
 device = "mps" if torch.backends.mps.is_available() else "cuda" if torch.cuda.is_available() else "cpu"
 
