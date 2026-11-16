@@ -2,38 +2,57 @@
 
 An open-source model that reads a text message and says **SCAM** or **SAFE**.
 
-It is a fine-tuned [DistilBERT](https://huggingface.co/distilbert/distilbert-base-uncased) model trained on real scam reports from around the world, real everyday SMS, and written safe service messages (OTP codes, bank alerts, deliveries and more). It runs on a normal laptop, so messages never need to leave your device.
+It is a fine-tuned [DistilBERT](https://huggingface.co/distilbert/distilbert-base-uncased) model trained on real scam reports from around the world, real everyday SMS, and written examples of both scams and safe messages (OTP codes, bank alerts, deliveries, family chats and more). It runs on a normal laptop, so messages never need to leave your device.
 
-**Version 1.0.0** · English only · Code: MIT · Data: CC BY 4.0
+**Version 1.1.0** · English only · Code: MIT · Data: CC BY 4.0
 
 **Model:** [rasheq/scam-shield-distilbert](https://huggingface.co/rasheq/scam-shield-distilbert) · **Dataset:** [rasheq/scam-shield-sms](https://huggingface.co/datasets/rasheq/scam-shield-sms)
 
 ```
 $ python predict.py "USPS: Your package is on hold due to an incomplete address. Update within 12 hours: usps-redeliver.top/track"
 
-🚨 SCAM  (98% scam)
+🚨 SCAM  (100% scam)
   Model saw: USPS: Your package is on hold due to an incomplete address. Update within 12 hours: <URL>
 ```
 
 ## Results
 
-Tested once on **1,531 real messages** that the model never saw during training:
+### Test B: 400 new messages (the honest score)
+
+Written by a different AI from a generic prompt, never used for training or tuning: 199 scams and 201 safe messages from 18 countries, both easy and hard.
+
+| Model | Accuracy | Scams caught | False alarms |
+|---|---|---|---|
+| v1.0.0 | 75.2% | 67% (134 of 199) | 17% (34 of 201) |
+| **v1.1.0** | **91.5%** | **89% (178 of 199)** | **6% (13 of 201)** |
+
+| v1.1.0 on | Accuracy | Scams caught | False alarms |
+|---|---|---|---|
+| Easy messages | 95.7% | 94% | 3% |
+| Hard messages | 81.4% | 79% | 16% |
+| Messages with a link | 88.6% | 91% | 18% |
+| Messages without a link | 93.1% | 88% | 4% |
+
+Full report: [`results/test_b/results.html`](results/test_b/results.html) (open in a browser) · every score: [`results/test_b_scores.csv`](results/test_b_scores.csv)
+
+### Held-out test set: 1,510 real messages
 
 | Metric | Score | Meaning |
 |---|---|---|
-| Accuracy | 97.8% | All answers right |
-| Precision | 98.7% | When it says scam, how often it is right |
-| Recall | 98.2% | Share of scams caught (1,047 of 1,066) |
-| F1 | 98.4% | Balance of precision and recall |
-| False alarm rate | 3.0% | Safe messages wrongly flagged (14 of 465) |
+| Accuracy | 98.5% | All answers right |
+| Precision | 99.0% | When it says scam, how often it is right |
+| Recall | 98.8% | Share of scams caught (1,032 of 1,045) |
+| F1 | 98.9% | Balance of precision and recall |
+| False alarm rate | 2.2% | Safe messages wrongly flagged (10 of 465) |
 
-![Run 2 results](results/run2/results.png)
+![Run 4 results](results/run4/results.png)
 
-Full report: [`results/run2/results.html`](results/run2/results.html) (open in a browser) · every mistake: [`results/run2/test_mistakes.csv`](results/run2/test_mistakes.csv)
+Full report: [`results/run4/results.html`](results/run4/results.html) · every mistake: [`results/run4/test_mistakes.csv`](results/run4/test_mistakes.csv)
 
 ### Read this before trusting the numbers
 
-The test set above has real scams but only **personal chats** as safe messages. On a separate hand-made set of 60 harder messages, the model got **51 of 60** right and flagged **7 of 28** real service messages as scams. See [Known limitations](#known-limitations).
+- The held-out test set has real scams but only **personal chats** as safe messages, so its scores are higher than real life. **Test B (about 90%) is closer to what to expect.**
+- On a hand-made set of 60 harder messages the model got **55 of 60** right (v1.0.0: 51 of 60). This set was used to find error patterns, so treat it as a rough check only.
 
 ## Quick start
 
@@ -47,7 +66,7 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-The trained model is not stored in this repo (it is 256 MB). `predict.py` downloads it automatically from Hugging Face the first time you run it, or you can train it yourself (below, about 12 minutes on a laptop GPU).
+The trained model is not stored in this repo (it is 256 MB). `predict.py` downloads it automatically from Hugging Face the first time you run it, or you can train it yourself (below, about 15 minutes on a laptop GPU).
 
 ## Check messages
 
@@ -66,11 +85,12 @@ You see the verdict, how sure the model is, and the message as the model saw it 
 ```bash
 python clean_data.py   # data/raw/      -> data/processed/clean.csv
 python split_data.py   # clean.csv      -> data/splits/train|val|test.csv
-python finetune.py     # splits         -> models/scam-distilbert-run2/ + results/run2/
-python make_report.py run2   # results  -> results/run2/results.html
+python finetune.py     # splits         -> models/scam-distilbert-run4/ + results/run4/
+python make_report.py run4   # results  -> results/run4/results.html
+python make_test_b_report.py # Test B   -> results/test_b/results.html (needs results/test_b_scores.csv)
 ```
 
-`finetune.py` downloads the base model from Hugging Face if it is not in `models/`. It uses the Apple GPU (MPS), an NVIDIA GPU (CUDA) or the CPU, whichever is available. Peak memory is about 7 GB.
+`split_data.py` keeps the existing validation and test sets, so scores stay comparable between runs; use `--fresh` for a new random split. `finetune.py` downloads the base model from Hugging Face if it is not in `models/`. It uses the Apple GPU (MPS), an NVIDIA GPU (CUDA) or the CPU, whichever is available. Peak memory is about 7 GB.
 
 | Setting | Value |
 |---|---|
@@ -79,7 +99,7 @@ python make_report.py run2   # results  -> results/run2/results.html
 | Batch size | 16 |
 | Learning rate | 2e-5, 10% warm-up, then linear decay |
 | Epochs | up to 4, early stop after 2 epochs without validation improvement |
-| Best epoch (run 2) | 2 |
+| Best epoch (run 4) | 2 |
 
 ## How it works
 
@@ -91,26 +111,31 @@ python make_report.py run2   # results  -> results/run2/results.html
 
 | Source | Messages used | Label | License |
 |---|---|---|---|
-| [IMC 2025 smishing reports](https://github.com/reportsmishing/Smishing-Dataset-IMC25) | 10,325 | scam | CC BY 4.0 |
-| [Mishra & Soni SMS phishing](https://data.mendeley.com/datasets/f45bkkt8pr/1) | 4,647 safe, 334 scam | both | CC BY 4.0 |
-| Synthetic safe service messages (this project) | 4,955 | safe | CC BY 4.0 |
+| [IMC 2025 smishing reports](https://github.com/reportsmishing/Smishing-Dataset-IMC25) | 10,167 | scam | CC BY 4.0 |
+| [Mishra & Soni SMS phishing](https://data.mendeley.com/datasets/f45bkkt8pr/1) | 4,650 safe, 333 scam | both | CC BY 4.0 |
+| Synthetic safe service messages (this project) | 4,953 | safe | CC BY 4.0 |
+| Synthetic hard cases, v2 (this project) | 1,970 safe, 1,999 scam | both | CC BY 4.0 |
+
+Synthetic messages are used for training only. 163 IMC reports that are not scams (real service messages, comments about scams, or too vague to judge) were removed by hand.
 
 Spam (ads) is left out on purpose: the model answers "is this a scam?", not "is this unwanted?". Details on cleaning, masking, de-duplication and the split: [`data/README.md`](data/README.md).
 
 ## Known limitations
 
 - **English only**, trained mostly on SMS-style messages. Emails and long chat messages are outside what it has learned.
-- **Too suspicious of real alerts.** Real fraud alerts, password resets, bills due, salary credits and long bank notices can be flagged as scams.
-- **Long, multi-line messages** lean towards SCAM, because long safe messages are rare in the training data.
-- **Some scams slip through:** slow, friendly romance scams, and very short "account blocked, call this number" messages with no link.
-- **Sensitive to wording:** small changes in wording can flip the answer (for example, one rewording of a fake USPS "package on hold" message is called safe).
-- **Label noise:** about 10–20% of the public scam reports are real messages that users were unsure about.
+- **It can't see link addresses.** Every link becomes `<URL>`, so a fake-looking domain (`bank-unlock-verify.top`) and a real one look the same. Scams whose only clue is the link can slip through.
+- **Long, multi-line real notices** (bank statements, sign-in alerts) can still be flagged as scams.
+- **Real alerts with links or money** (receipts, shop promos, fines, charity appeals) are the most common false alarms.
+- **Some scams slip through:** slow "wrong number" chats that turn into investment pitches, and some bank-alert scams that ask you to call a number.
+- **Sensitive to wording:** small changes in wording can flip the answer.
+- **Label noise:** some public scam reports are still real messages that users were unsure about.
 - **It is a helper, not a guarantee.** Never treat a SAFE result as proof that a message is safe.
 
 ## Roadmap
 
-- Log errors from wider testing, then add training data for each error pattern.
-- Real safe service messages in the test set.
+- Keep the link's domain name instead of a plain `<URL>` tag (v2.0.0).
+- Real safe service messages and long messages in the test set.
+- A fresh test set for every release.
 - More languages (multilingual base model).
 - Smaller model for browsers and phones.
 
@@ -122,9 +147,12 @@ clean_data.py     build data/processed/clean.csv from data/raw/
 split_data.py     build data/splits/ (train / val / test)
 finetune.py       fine-tune DistilBERT, test once, save results
 make_report.py    build the HTML results page for a run
+make_test_b_report.py  build the HTML results page for Test B
 predict.py        check messages live
 data/             datasets and their licenses (see data/README.md)
-results/run2/     scores, mistakes, graphs and log for the released model
+data/test_b/      Test B: 400 unseen messages for the honest score
+results/run4/     scores, mistakes and graphs for the released model (v1.1.0)
+results/test_b/   Test B report comparing runs 2, 3 and 4
 ```
 
 ## Credits
