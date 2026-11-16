@@ -1,0 +1,36 @@
+text,label,pred,scam_prob,source,scam_type
+Standard Bank App: OTP: <NUMBER>. Cash voucher created for <NUMBER>.00. Queries? <NUMBER>.,scam,safe,0.003807088825851679,imc2025,banking
+Y'ello! Your 1GB MTN EverydayGigs Bundle has been loaded.,scam,safe,0.008162392303347588,imc2025,telecom
+Check out My App: <URL>,scam,safe,0.019650118425488472,imc2025,others
+I'll call you later.,scam,safe,0.0388653427362442,imc2025,others
+Lily see the message and reply me Why are you so busy all the time don't you rest at night? 🍷😆:),scam,safe,0.04022365063428879,imc2025,wrong number
+"Ask for forgiveness from the Almighty God. He is the only one that gives and add no sorrows. Young man, save yourself while you still can.",scam,safe,0.04103764891624451,imc2025,others
+"Cheese n Corn, Fresh Veggie",scam,safe,0.04325650632381439,imc2025,others
+Are you OK? Here's with work I just wanted this song Call Mmm mmm D C Xx,scam,safe,0.06914859265089035,imc2025,others
+Hey Mum!!! I've got a new phone XXX,scam,safe,0.09809613227844238,imc2025,hey mum/dad
+Co m e to our post office to get your delivery package.,scam,safe,0.1263091117143631,imc2025,delivery
+OMLOG E UPS HUB GA,scam,safe,0.15883666276931763,imc2025,delivery
+Fuck you scammer! I'll find you and I'm coming for you. 💀,scam,safe,0.16790825128555298,imc2025,others
+Using a capital 'i' instead of a lower case l,scam,safe,0.170662060379982,imc2025,others
+The IRS will never text you.,scam,safe,0.17371128499507904,imc2025,government
+Order confirmed: You can add more items until we START packing your order.,scam,safe,0.18290908634662628,imc2025,delivery
+", | need to know if you are available in a split second. | am at a meeting and limited to calls, but |am good to go with texts if that works. Need you to handle a task. Thanks",scam,safe,0.20264558494091034,imc2025,wrong number
+"Off Road Warehouse: Hey there! We hope to see you soon at our ORW! Just a reminder, we are open PST and 9am-3pm PST! Looking for help? Give us a call at <PHONE_NUMBER>! Get directions: <URL>",scam,safe,0.21731089055538177,imc2025,others
+Don’t get your heart broken by SMishing scams. The IRS will never text you.,scam,safe,0.23288123309612274,imc2025,government
+"Wow! Astonishingly, first these fraudsters call you and when you catch their lie, they start abusing you",scam,safe,0.2523159086704254,imc2025,others
+Arriving : Your Amazon Fresh order for delivery.,scam,safe,0.268559992313385,imc2025,delivery
+Hope you still have this house available on facebook because i really want it so bad! https,scam,safe,0.3247911334037781,imc2025,others
+Hi cancellation for My SIM 1 has been successfully scheduled for end of this month and your final payment for this SIM will be processed on your selected date . To retract cancellation sign into my-rain on your rain app or go to <URL>. Thanks rain.,scam,safe,0.33711811900138855,imc2025,telecom
+Packed: Your Rajdhani Chakki Fresh ...+11 items have been packed. Track here <URL>,scam,safe,0.34554725885391235,imc2025,delivery
+FRM:ampbell SUBJ:the shadedEvie and MSG: kn6wde Please wait...,scam,safe,0.3712879419326782,imc2025,others
+"for joining is passed in our company . Can get 3,000/ Day.",scam,safe,0.3951185345649719,imc2025,others
+GMAIL: Mailbox accessed from a new location or device. Wasn't you? Let us know: <URL>,scam,safe,0.396793007850647,imc2025,others
+Hi referral benefit amount of Rs.300 has been credited to your Tata Play account.,scam,safe,0.40386998653411865,imc2025,others
+So during another trip she now called and said network that she will do it I should resend my account number,scam,safe,0.44396528601646423,imc2025,others
+IT'S MY PLEASURE TO PARTNER WITH YOU IN ...,scam,safe,0.4782785475254059,imc2025,others
+Ofcourse I also upload some songs,safe,scam,0.6166059970855713,mishra_soni,
+He says hi and to get your back to uganda,safe,scam,0.6642053723335266,mishra_soni,
+"Pls send me a comprehensive mail about who i'm paying, when and how much.",safe,scam,0.6884364485740662,mishra_soni,
+"Sir, I am waiting for your call I have an urgent meeting later on..",safe,scam,0.7415189146995544,mishra_soni,
+You see the requirements please,safe,scam,0.9250749349594116,mishra_soni,
+"Hi, Mobile no. <PHONE_NUMBER> has added you in their contact list on <URL> It s a great place to send free sms to people For more visit <URL>",safe,scam,0.996304988861084,mishra_soni,

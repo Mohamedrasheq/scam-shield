@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scam Detector run4 Results</title>
+<style>
+  :root { --bg:#f7f8fa; --panel:#fff; --fg:#1d2330; --muted:#5d6678; --line:#e3e6ec;
+          --train:#2f6fd0; --val:#e07b24; --bad:#c8443c; --ok:#2e8b57; --grid:#eef0f4; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#14171d; --panel:#1c2028; --fg:#e7eaf0; --muted:#9aa3b5; --line:#2c323d;
+            --train:#6ea2f0; --val:#f0a05a; --bad:#ec6f66; --ok:#5cc58a; --grid:#262b35; } }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--fg); font:15px/1.5 -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { max-width:1100px; margin:0 auto; padding:28px 16px 60px; display:grid; gap:22px; }
+  h1 { margin:0; font-size:26px; font-weight:600; }
+  h2 { margin:0 0 4px; font-size:17px; font-weight:600; }
+  .sub, .note { color:var(--muted); font-size:13px; margin:4px 0 0; }
+  .card { background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:18px; min-width:0; }
+  .tiles { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px; }
+  .tile .v { font-size:28px; font-weight:600; font-variant-numeric:tabular-nums; }
+  .tile .k { color:var(--muted); font-size:13px; }
+  .tile.bad .v { color:var(--bad); }
+  .row { display:grid; grid-template-columns:1.6fr 1fr; gap:22px; }
+  @media (max-width:800px) { .row { grid-template-columns:1fr; } }
+  .chart { position:relative; }
+  svg { display:block; width:100%; height:auto; overflow:visible; }
+  .axis text { fill:var(--muted); font-size:11px; }
+  .tip { position:absolute; pointer-events:none; background:var(--panel); border:1px solid var(--line);
+         box-shadow:0 4px 14px rgba(0,0,0,.15); border-radius:8px; padding:8px 10px; font-size:12px; display:none; white-space:nowrap; }
+  .legend { display:flex; gap:16px; font-size:13px; color:var(--muted); margin:6px 0 4px; flex-wrap:wrap; }
+  .legend i { display:inline-block; width:14px; height:3px; border-radius:2px; margin-right:6px; vertical-align:middle; }
+  .cm { display:grid; grid-template-columns:auto 1fr 1fr; gap:6px; align-items:stretch; font-size:13px; }
+  .cm .h { color:var(--muted); text-align:center; align-self:end; }
+  .cm .r { color:var(--muted); align-self:center; text-align:right; padding-right:6px; }
+  .cm .c { border-radius:8px; padding:18px 8px; text-align:center; font-size:24px; font-weight:600; font-variant-numeric:tabular-nums; }
+  .cm .c small { display:block; font-size:12px; font-weight:400; color:var(--muted); }
+  .cm .good { background:color-mix(in srgb, var(--ok) 18%, transparent); }
+  .cm .wrong { background:color-mix(in srgb, var(--bad) 16%, transparent); }
+  .filters { display:flex; gap:8px; flex-wrap:wrap; margin:8px 0 10px; }
+  .filters button { font:inherit; font-size:13px; padding:5px 12px; border-radius:999px; border:1px solid var(--line);
+                    background:transparent; color:var(--fg); cursor:pointer; }
+  .filters button[aria-pressed=true] { background:var(--fg); color:var(--bg); border-color:var(--fg); }
+  .tablewrap { overflow-x:auto; }
+  table { border-collapse:collapse; width:100%; font-size:13px; }
+  th, td { text-align:left; padding:8px 10px; border-bottom:1px solid var(--line); vertical-align:top; }
+  th { color:var(--muted); font-weight:500; white-space:nowrap; }
+  td.num { text-align:right; font-variant-numeric:tabular-nums; white-space:nowrap; }
+  td.msg { min-width:260px; }
+  .bar { height:6px; border-radius:3px; background:var(--grid); margin-top:4px; min-width:60px; }
+  .bar span { display:block; height:100%; border-radius:3px; background:var(--bad); }
+  .pill { font-size:12px; padding:1px 8px; border-radius:999px; border:1px solid var(--line); white-space:nowrap; }
+  details summary { cursor:pointer; color:var(--muted); font-size:13px; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>Scam Detector &middot; <span id="runName"></span></h1>
+    <p class="sub" id="lede"></p>
+  </header>
+
+  <section class="tiles" id="tiles"></section>
+
+  <section class="row">
+    <div class="card">
+      <h2>Loss during training</h2>
+      <p class="note">Lower is better. Validation loss uses real messages the model never learns from. Point at the chart to read values.</p>
+      <div class="legend"><span><i style="background:var(--train)"></i>Train loss</span><span><i style="background:var(--val)"></i>Validation loss</span><span><i style="background:var(--muted);height:0;border-top:2px dashed var(--muted)"></i>Best model saved</span></div>
+      <div class="chart" id="loss"><div class="tip"></div></div>
+    </div>
+    <div class="card">
+      <h2>Right vs wrong on the test set</h2>
+      <p class="note">Each box counts real test messages.</p>
+      <div class="cm" id="cm" style="margin-top:14px"></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Every test mistake</h2>
+    <p class="note">Scam score is how sure the model was that the message is a scam. Above 50% it says scam.</p>
+    <div class="filters" id="filters">
+      <button data-f="all" aria-pressed="true">All</button>
+      <button data-f="scam">Missed scams</button>
+      <button data-f="safe">False alarms</button>
+    </div>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Message</th><th>Really</th><th>Model said</th><th>Source</th><th style="text-align:right">Scam score</th></tr></thead>
+      <tbody id="rows"></tbody>
+    </table></div>
+  </section>
+
+  <section class="card">
+    <details><summary>Training settings and each epoch</summary>
+      <div class="tablewrap" style="margin-top:10px"><table>
+        <thead><tr><th>Epoch</th><th style="text-align:right">Train loss</th><th style="text-align:right">Validation loss</th><th style="text-align:right">Seconds</th><th>Best so far</th></tr></thead>
+        <tbody id="epochs"></tbody>
+      </table></div>
+      <p class="note" id="settings"></p>
+    </details>
+  </section>
+</main>
+
+<script>
+const D = {"run": "run4", "settings": {"base_model": "models/distilbert-base-uncased", "max_len": 128, "batch_size": 16, "epochs": 4, "lr": 2e-05, "patience": 2, "seed": 42}, "stepsPerEpoch": 1316, "points": [{"step": 100, "train_loss": 0.6731677728891373, "val_loss": 0.5747351791877645}, {"step": 200, "train_loss": 0.4619870612025261, "val_loss": 0.2572776426410485}, {"step": 300, "train_loss": 0.25795729719102384, "val_loss": 0.1639080925866843}, {"step": 400, "train_loss": 0.21210227765142917, "val_loss": 0.15404651498308392}, {"step": 500, "train_loss": 0.17013719333335758, "val_loss": 0.11876169368822315}, {"step": 600, "train_loss": 0.17291978815570475, "val_loss": 0.16025293850653685}, {"step": 700, "train_loss": 0.1682539726048708, "val_loss": 0.09586578515168052}, {"step": 800, "train_loss": 0.13045725923031568, "val_loss": 0.08433877825934627}, {"step": 900, "train_loss": 0.11716444619931281, "val_loss": 0.07482009419593318}, {"step": 1000, "train_loss": 0.16150002354756, "val_loss": 0.14927366770685352}, {"step": 1100, "train_loss": 0.12671536499634384, "val_loss": 0.09095439448611767}, {"step": 1200, "train_loss": 0.13414417485240848, "val_loss": 0.07735991082215973}, {"step": 1300, "train_loss": 0.1010793449729681, "val_loss": 0.07356061175248192}, {"step": 1416, "train_loss": 0.05135297874454409, "val_loss": 0.054944371095604065}, {"step": 1516, "train_loss": 0.07806873578578234, "val_loss": 0.07364621831706925}, {"step": 1616, "train_loss": 0.06824070104630664, "val_loss": 0.07012775690549249}, {"step": 1716, "train_loss": 0.06062401696573943, "val_loss": 0.07269180965651845}, {"step": 1816, "train_loss": 0.05028127462603152, "val_loss": 0.06050397485027717}, {"step": 1916, "train_loss": 0.04974881582893431, "val_loss": 0.06959198165279801}, {"step": 2016, "train_loss": 0.06833542112028226, "val_loss": 0.07163561986072547}, {"step": 2116, "train_loss": 0.05938811937347054, "val_loss": 0.04807567510034998}, {"step": 2216, "train_loss": 0.06813532300060615, "val_loss": 0.059102200667079864}, {"step": 2316, "train_loss": 0.04944364802911878, "val_loss": 0.05628158415813463}, {"step": 2416, "train_loss": 0.06869595801923424, "val_loss": 0.06235451117375327}, {"step": 2516, "train_loss": 0.05868986823828891, "val_loss": 0.04214045685587515}, {"step": 2616, "train_loss": 0.049678901182487606, "val_loss": 0.06181978604099182}, {"step": 2732, "train_loss": 0.025238419991219417, "val_loss": 0.044747105729519156}, {"step": 2832, "train_loss": 0.022482045643264427, "val_loss": 0.07125460101734347}, {"step": 2932, "train_loss": 0.03622047859767918, "val_loss": 0.06494801743660092}, {"step": 3032, "train_loss": 0.019382034103618936, "val_loss": 0.05325419679549659}, {"step": 3132, "train_loss": 0.016138591626659034, "val_loss": 0.07415634213248268}, {"step": 3232, "train_loss": 0.02768470703798812, "val_loss": 0.0724279600938545}, {"step": 3332, "train_loss": 0.02521409121749457, "val_loss": 0.09427307114182336}, {"step": 3432, "train_loss": 0.02057908205431886, "val_loss": 0.05332692258772675}, {"step": 3532, "train_loss": 0.02119276497513056, "val_loss": 0.06373073788766134}, {"step": 3632, "train_loss": 0.016447512034792455, "val_loss": 0.050040115023403}, {"step": 3732, "train_loss": 0.029211567377205937, "val_loss": 0.0501548785605747}, {"step": 3832, "train_loss": 0.023196481668855996, "val_loss": 0.046664200126426914}, {"step": 3932, "train_loss": 0.01159001118328888, "val_loss": 0.04911491292342297}, {"step": 4048, "train_loss": 0.007953728137654253, "val_loss": 0.045035056045108456}, {"step": 4148, "train_loss": 0.008498644775245338, "val_loss": 0.056124663249474016}, {"step": 4248, "train_loss": 0.007493812202010303, "val_loss": 0.05609411297547285}, {"step": 4348, "train_loss": 0.006003442651999649, "val_loss": 0.05102231649523514}, {"step": 4448, "train_loss": 0.010271119431417902, "val_loss": 0.052178556142302}, {"step": 4548, "train_loss": 0.007447648356319405, "val_loss": 0.05062899818319385}, {"step": 4648, "train_loss": 0.005488491907890421, "val_loss": 0.05006651610626397}, {"step": 4748, "train_loss": 0.009475743955408688, "val_loss": 0.05492666701857088}, {"step": 4848, "train_loss": 0.007853226300212554, "val_loss": 0.04592276412068986}, {"step": 4948, "train_loss": 0.013002357953810132, "val_loss": 0.049432761121086716}, {"step": 5048, "train_loss": 0.00957845819008071, "val_loss": 0.05178096896123613}, {"step": 5148, "train_loss": 0.0031882441847119482, "val_loss": 0.05206395525076743}, {"step": 5248, "train_loss": 0.011491634689446074, "val_loss": 0.05586427630604503}], "epochs": [{"epoch": 1, "train_loss": 0.22039329607038274, "val_loss": 0.06702999356857424, "seconds": 209, "best": true}, {"epoch": 2, "train_loss": 0.0606338562412714, "val_loss": 0.05403503736070992, "seconds": 209, "best": true}, {"epoch": 3, "train_loss": 0.022938459658872132, "val_loss": 0.10156276263404682, "seconds": 207, "best": false}, {"epoch": 4, "train_loss": 0.00821803550341727, "val_loss": 0.05587181414054325, "seconds": 211, "best": false}], "test": {"accuracy": 0.9847682119205298, "precision": 0.9904030710172744, "recall": 0.9875598086124402, "f1": 0.9889793962625779, "false_alarm_rate": 0.021505376344086023, "tp": 1032, "fn": 13, "fp": 10, "tn": 455, "rows": 1510}, "mistakes": [{"text": "Check out My App: <URL>", "label": "scam", "pred": "safe", "scam_prob": 0.00570365134626627, "source": "imc2025", "scam_type": "others"}, {"text": "Hey Mum!!! I've got a new phone XXX", "label": "scam", "pred": "safe", "scam_prob": 0.025119857862591743, "source": "imc2025", "scam_type": "hey mum/dad"}, {"text": "Co m e to our post office to get your delivery package.", "label": "scam", "pred": "safe", "scam_prob": 0.04389958456158638, "source": "imc2025", "scam_type": "delivery"}, {"text": "Your BevMo! order is scheduled for delivery at 7:00-8:00pm Reply STOP to turn off SMS.", "label": "scam", "pred": "safe", "scam_prob": 0.059743016958236694, "source": "imc2025", "scam_type": "delivery"}, {"text": "Your order is ready for collection from ROCHDALE. Simply bring a copy of your email as proof of purchase. Thanks for shopping at", "label": "scam", "pred": "safe", "scam_prob": 0.09225952625274658, "source": "imc2025", "scam_type": "delivery"}, {"text": "Hi I'm making chicken curry at home . Do you want to come?", "label": "scam", "pred": "safe", "scam_prob": 0.26996922492980957, "source": "imc2025", "scam_type": "wrong number"}, {"text": "Update:Hi from EE. As requested we've added an additional phone line to your account. If you didnt request this change, report it ASAP at <URL>", "label": "scam", "pred": "safe", "scam_prob": 0.34958767890930176, "source": "imc2025", "scam_type": "telecom"}, {"text": "Your Walmart order was delivered. Thanks for shopping with us! Reply HELP for info; STOP to opt out", "label": "scam", "pred": "safe", "scam_prob": 0.35567229986190796, "source": "imc2025", "scam_type": "delivery"}, {"text": "So during another trip she now called and said network that she will do it I should resend my account number", "label": "scam", "pred": "safe", "scam_prob": 0.36357682943344116, "source": "imc2025", "scam_type": "others"}, {"text": "Dear Customer, charges for your PTCL connection <PHONE_NUMBER> are now Rs. 1,829. Keep enjoying High-Speed Internet. For information, call <NUMBER>.", "label": "scam", "pred": "safe", "scam_prob": 0.3657304048538208, "source": "imc2025", "scam_type": "telecom"}, {"text": "Your WhatsApp code:", "label": "scam", "pred": "safe", "scam_prob": 0.4026487171649933, "source": "imc2025", "scam_type": "others"}, {"text": "BOA: Your Online Profile has a probable association with a system vulnerability. Log in and verify your details at <URL> to prevent identity theft.", "label": "scam", "pred": "safe", "scam_prob": 0.40368762612342834, "source": "imc2025", "scam_type": "banking"}, {"text": "18 debited from your wallet.", "label": "scam", "pred": "safe", "scam_prob": 0.47792959213256836, "source": "imc2025", "scam_type": "others"}, {"text": "I don know account details..i will ask my mom and send you.my mom is out of reach now.", "label": "safe", "pred": "scam", "scam_prob": 0.5074687004089355, "source": "mishra_soni", "scam_type": ""}, {"text": "Not directly behind... Abt 4 rows behind \u00fc...", "label": "safe", "pred": "scam", "scam_prob": 0.5642528533935547, "source": "mishra_soni", "scam_type": ""}, {"text": "Not for possession, especially not first offense", "label": "safe", "pred": "scam", "scam_prob": 0.5829086899757385, "source": "mishra_soni", "scam_type": ""}, {"text": "Ofcourse I also upload some songs", "label": "safe", "pred": "scam", "scam_prob": 0.6575387120246887, "source": "mishra_soni", "scam_type": ""}, {"text": "Pls send me your address sir.", "label": "safe", "pred": "scam", "scam_prob": 0.7744517922401428, "source": "mishra_soni", "scam_type": ""}, {"text": "Ola would get back to you maybe not today but I ve told him you can be his direct link in the US in getting cars he bids for online, you arrange shipping and you get a cut. Or U????? For a partnership where U????? Invest money for shipping and he takes care of the rest!U??Wud b self reliant soon dnt worry", "label": "safe", "pred": "scam", "scam_prob": 0.805733859539032, "source": "mishra_soni", "scam_type": ""}, {"text": "Sir, I am waiting for your call I have an urgent meeting later on..", "label": "safe", "pred": "scam", "scam_prob": 0.9107539653778076, "source": "mishra_soni", "scam_type": ""}, {"text": "Pls send me a comprehensive mail about who i'm paying, when and how much.", "label": "safe", "pred": "scam", "scam_prob": 0.9496317505836487, "source": "mishra_soni", "scam_type": ""}, {"text": "You see the requirements please", "label": "safe", "pred": "scam", "scam_prob": 0.9556546211242676, "source": "mishra_soni", "scam_type": ""}, {"text": "Hi, Mobile no. <PHONE_NUMBER> has added you in their contact list on <URL> It s a great place to send free sms to people For more visit <URL>", "label": "safe", "pred": "scam", "scam_prob": 0.9975718855857849, "source": "mishra_soni", "scam_type": ""}]};
+const pct = v => (v * 100).toFixed(1) + '%';
+const el = (tag, attrs = {}, text) => { const e = document.createElement(tag); for (const [k, v] of Object.entries(attrs)) e.setAttribute(k, v); if (text != null) e.textContent = text; return e; };
+const T = D.test;
+
+document.getElementById('runName').textContent = D.run;
+document.getElementById('lede').textContent =
+  `Caught ${T.tp} of ${T.tp + T.fn} scams and wrongly flagged ${T.fp} of ${T.fp + T.tn} safe messages, on ${T.rows} real test messages.`;
+
+// Score tiles
+const tiles = [['Accuracy', T.accuracy, 'all answers right'], ['Precision', T.precision, 'when it says scam, how often right'],
+  ['Recall', T.recall, 'share of scams caught'], ['F1', T.f1, 'balance of precision and recall'],
+  ['False alarm rate', T.false_alarm_rate, 'safe messages flagged as scam', true]];
+for (const [k, v, hint, bad] of tiles) {
+  const t = el('div', { class: 'card tile' + (bad ? ' bad' : '') });
+  t.append(el('div', { class: 'v' }, pct(v)), el('div', { class: 'k' }, k), el('div', { class: 'note' }, hint));
+  document.getElementById('tiles').append(t);
+}
+
+// Confusion matrix
+const cm = document.getElementById('cm');
+const cell = (n, of, cls, label) => { const c = el('div', { class: 'c ' + cls }, String(n)); c.append(el('small', {}, label + ' · ' + pct(n / of))); return c; };
+cm.append(el('div'), el('div', { class: 'h' }, 'Model said safe'), el('div', { class: 'h' }, 'Model said scam'));
+cm.append(el('div', { class: 'r' }, 'Really safe'), cell(T.tn, T.tn + T.fp, 'good', 'correct'), cell(T.fp, T.tn + T.fp, 'wrong', 'false alarm'));
+cm.append(el('div', { class: 'r' }, 'Really scam'), cell(T.fn, T.fn + T.tp, 'wrong', 'missed'), cell(T.tp, T.fn + T.tp, 'good', 'caught'));
+
+// Loss chart (inline SVG)
+function drawLoss() {
+  const box = document.getElementById('loss'), tip = box.querySelector('.tip');
+  box.querySelectorAll('svg').forEach(s => s.remove());
+  const W = Math.max(320, box.clientWidth), H = 300, m = { t: 12, r: 14, b: 32, l: 44 };
+  const pts = D.points.map(p => ({ x: p.step / D.stepsPerEpoch, step: p.step, train: p.train_loss, val: p.val_loss }));
+  const maxE = Math.max(Math.ceil(pts[pts.length - 1].x), 1);
+  const yMax = Math.ceil(Math.max(...pts.map(p => Math.max(p.train, p.val))) * 10) / 10;
+  const X = v => m.l + (v / maxE) * (W - m.l - m.r), Y = v => H - m.b - (v / yMax) * (H - m.t - m.b);
+  const NS = 'http://www.w3.org/2000/svg', s = document.createElementNS(NS, 'svg');
+  s.setAttribute('viewBox', `0 0 ${W} ${H}`); s.setAttribute('role', 'img');
+  s.setAttribute('aria-label', 'Line chart of train and validation loss across epochs');
+  const add = (tag, a) => { const e = document.createElementNS(NS, tag); for (const [k, v] of Object.entries(a)) e.setAttribute(k, v); s.append(e); return e; };
+  const g = add('g', { class: 'axis' });
+  for (let i = 0; i <= 5; i++) {
+    const v = yMax * i / 5, y = Y(v);
+    add('line', { x1: m.l, x2: W - m.r, y1: y, y2: y, stroke: 'var(--grid)' });
+    const t = document.createElementNS(NS, 'text'); t.setAttribute('x', m.l - 6); t.setAttribute('y', y + 4); t.setAttribute('text-anchor', 'end'); t.textContent = v.toFixed(2); g.append(t);
+  }
+  for (let e = 0; e <= maxE; e++) {
+    const t = document.createElementNS(NS, 'text'); t.setAttribute('x', X(e)); t.setAttribute('y', H - 10); t.setAttribute('text-anchor', 'middle'); t.textContent = e === 0 ? 'Start' : 'Epoch ' + e; g.append(t);
+  }
+  const best = D.epochs.filter(e => e.best).pop();
+  if (best) add('line', { x1: X(best.epoch), x2: X(best.epoch), y1: m.t, y2: H - m.b, stroke: 'var(--muted)', 'stroke-dasharray': '4 3' });
+  for (const [key, color] of [['train', 'var(--train)'], ['val', 'var(--val)']]) {
+    add('path', { d: pts.map((p, i) => (i ? 'L' : 'M') + X(p.x) + ',' + Y(p[key])).join(''), fill: 'none', stroke: color, 'stroke-width': 2 });
+    pts.forEach(p => add('circle', { cx: X(p.x), cy: Y(p[key]), r: 3, fill: color }));
+  }
+  const cross = add('line', { y1: m.t, y2: H - m.b, stroke: 'var(--muted)', visibility: 'hidden' });
+  const hit = add('rect', { x: m.l, y: m.t, width: W - m.l - m.r, height: H - m.t - m.b, fill: 'transparent' });
+  hit.addEventListener('pointermove', ev => {
+    const r = s.getBoundingClientRect(), xv = ((ev.clientX - r.left) * W / r.width - m.l) / (W - m.l - m.r) * maxE;
+    const p = pts.reduce((a, b) => Math.abs(b.x - xv) < Math.abs(a.x - xv) ? b : a);
+    cross.setAttribute('x1', X(p.x)); cross.setAttribute('x2', X(p.x)); cross.setAttribute('visibility', 'visible');
+    tip.textContent = ''; tip.append(el('div', {}, `Step ${p.step} · epoch ${p.x.toFixed(2)}`), el('div', {}, `Train loss ${p.train.toFixed(4)}`), el('div', {}, `Validation loss ${p.val.toFixed(4)}`));
+    tip.style.display = 'block';
+    const px = X(p.x) * r.width / W; tip.style.top = '30px';
+    tip.style.left = (px + 12 + tip.offsetWidth > box.clientWidth ? px - tip.offsetWidth - 12 : px + 12) + 'px';
+  });
+  hit.addEventListener('pointerleave', () => { tip.style.display = 'none'; cross.setAttribute('visibility', 'hidden'); });
+  box.prepend(s);
+}
+drawLoss();
+new ResizeObserver(drawLoss).observe(document.getElementById('loss'));
+
+// Mistakes table with filter
+function drawRows(f) {
+  const tb = document.getElementById('rows'); tb.textContent = '';
+  D.mistakes.filter(r => f === 'all' || r.label === f).forEach(r => {
+    const tr = el('tr');
+    tr.append(el('td', { class: 'msg' }, r.text), el('td', {}, r.label === 'scam' ? 'Scam' : 'Safe'));
+    const said = el('td'); said.append(el('span', { class: 'pill' }, r.pred === 'scam' ? 'Scam' : 'Safe')); tr.append(said);
+    tr.append(el('td', {}, r.source + (r.scam_type ? ' / ' + r.scam_type : '')));
+    const sc = el('td', { class: 'num' }, pct(r.scam_prob)); const b = el('div', { class: 'bar' }); const fill = el('span'); fill.style.width = (r.scam_prob * 100) + '%'; b.append(fill); sc.append(b); tr.append(sc);
+    tb.append(tr);
+  });
+}
+document.querySelectorAll('#filters button').forEach(b => b.addEventListener('click', () => {
+  document.querySelectorAll('#filters button').forEach(x => x.setAttribute('aria-pressed', x === b));
+  drawRows(b.dataset.f);
+}));
+drawRows('all');
+
+// Epochs + settings
+D.epochs.forEach(e => {
+  const tr = el('tr');
+  tr.append(el('td', {}, e.epoch), el('td', { class: 'num' }, e.train_loss.toFixed(4)), el('td', { class: 'num' }, e.val_loss.toFixed(4)), el('td', { class: 'num' }, e.seconds), el('td', {}, e.best ? '✓' : ''));
+  document.getElementById('epochs').append(tr);
+});
+const S = D.settings;
+document.getElementById('settings').textContent = `Base model ${S.base_model} · max length ${S.max_len} · batch ${S.batch_size} · up to ${S.epochs} epochs · learning rate ${S.lr} · patience ${S.patience} · seed ${S.seed}`;
+</script>
+</body>
+</html>

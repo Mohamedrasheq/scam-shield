@@ -5,6 +5,7 @@ Inputs (never modified):
   data/raw/imc2025/final_dataset_output.csv   -> modern global scam reports (scam only)
   data/raw/mishra_soni/Dataset_5971.csv       -> ham / spam / smishing
   data/raw/synthetic_safe/safe_service_messages.csv -> written safe service messages (safe only)
+  data/raw/synthetic_v2/messages.csv                -> written hard cases, scam + safe (v2)
 
 Output:
   data/processed/clean.csv   columns: text, label (safe|scam), source, scam_type
@@ -16,7 +17,8 @@ Steps:
   5. Junk       drop messages with almost no words
   6. Mask       same tags for links, phones, emails, long numbers in ALL data
   7. Dupes      exact copies, then same-pattern copies
-  8. Labels     drop IMC rows that are clearly real (not scam) messages
+  8. Labels     drop IMC rows that are clearly real (not scam) messages,
+                plus the hand-reviewed list in data/raw/imc2025/label_fixes.csv
   9. Balance    report counts
  10. Save       write clean.csv + print a report
 
@@ -68,7 +70,13 @@ log("load", f"Synthetic safe service messages: {len(syn)} rows")
 syn = pd.DataFrame({"text": syn["text"].astype(str), "label": "safe",
                     "source": "synthetic", "scam_type": ""})
 
-df = pd.concat([imc, ms, syn], ignore_index=True)
+syn2 = pd.read_csv("data/raw/synthetic_v2/messages.csv")
+log("load", f"Synthetic v2 (scam + safe): {len(syn2)} rows")
+syn2 = pd.DataFrame({"text": syn2["text"].astype(str), "label": syn2["label"].str.strip().str.lower(),
+                     "source": "synthetic_v2",
+                     "scam_type": syn2["category"].where(syn2["label"].str.strip().str.lower() == "scam", "")})
+
+df = pd.concat([imc, ms, syn, syn2], ignore_index=True)
 log("3 labels", f"combined: {len(df)} rows | " + ", ".join(f"{k} {v}" for k, v in df['label'].value_counts().items()))
 
 # ---------------------------------------------------------------
@@ -115,6 +123,14 @@ log("8 labels", f"removed {wrong.sum()} IMC rows that look like real messages, e
 for t in df.loc[wrong, "text"].head(5):
     log("8 labels", f"   - {t[:110]}")
 df = df[~wrong]
+
+# Hand-reviewed IMC rows that are not scams (real service messages, non-scam talk,
+# or too vague to judge). List made by reading every IMC row the Run 3 model doubted.
+fixes = pd.read_csv("data/raw/imc2025/label_fixes.csv", keep_default_na=False)
+fix_keys = set(fixes["text"].str.lower().str.replace(r"\s+", " ", regex=True).str.strip())
+hand = (df["source"] == "imc2025") & df["text"].str.lower().str.replace(r"\s+", " ", regex=True).str.strip().isin(fix_keys)
+log("8 labels", f"removed {hand.sum()} IMC rows from the hand-reviewed list ({len(fixes)} entries)")
+df = df[~hand]
 
 # ---------------------------------------------------------------
 # Step 7: remove duplicates

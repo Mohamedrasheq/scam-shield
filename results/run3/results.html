@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scam Detector run3 Results</title>
+<style>
+  :root { --bg:#f7f8fa; --panel:#fff; --fg:#1d2330; --muted:#5d6678; --line:#e3e6ec;
+          --train:#2f6fd0; --val:#e07b24; --bad:#c8443c; --ok:#2e8b57; --grid:#eef0f4; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#14171d; --panel:#1c2028; --fg:#e7eaf0; --muted:#9aa3b5; --line:#2c323d;
+            --train:#6ea2f0; --val:#f0a05a; --bad:#ec6f66; --ok:#5cc58a; --grid:#262b35; } }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--fg); font:15px/1.5 -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { max-width:1100px; margin:0 auto; padding:28px 16px 60px; display:grid; gap:22px; }
+  h1 { margin:0; font-size:26px; font-weight:600; }
+  h2 { margin:0 0 4px; font-size:17px; font-weight:600; }
+  .sub, .note { color:var(--muted); font-size:13px; margin:4px 0 0; }
+  .card { background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:18px; min-width:0; }
+  .tiles { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px; }
+  .tile .v { font-size:28px; font-weight:600; font-variant-numeric:tabular-nums; }
+  .tile .k { color:var(--muted); font-size:13px; }
+  .tile.bad .v { color:var(--bad); }
+  .row { display:grid; grid-template-columns:1.6fr 1fr; gap:22px; }
+  @media (max-width:800px) { .row { grid-template-columns:1fr; } }
+  .chart { position:relative; }
+  svg { display:block; width:100%; height:auto; overflow:visible; }
+  .axis text { fill:var(--muted); font-size:11px; }
+  .tip { position:absolute; pointer-events:none; background:var(--panel); border:1px solid var(--line);
+         box-shadow:0 4px 14px rgba(0,0,0,.15); border-radius:8px; padding:8px 10px; font-size:12px; display:none; white-space:nowrap; }
+  .legend { display:flex; gap:16px; font-size:13px; color:var(--muted); margin:6px 0 4px; flex-wrap:wrap; }
+  .legend i { display:inline-block; width:14px; height:3px; border-radius:2px; margin-right:6px; vertical-align:middle; }
+  .cm { display:grid; grid-template-columns:auto 1fr 1fr; gap:6px; align-items:stretch; font-size:13px; }
+  .cm .h { color:var(--muted); text-align:center; align-self:end; }
+  .cm .r { color:var(--muted); align-self:center; text-align:right; padding-right:6px; }
+  .cm .c { border-radius:8px; padding:18px 8px; text-align:center; font-size:24px; font-weight:600; font-variant-numeric:tabular-nums; }
+  .cm .c small { display:block; font-size:12px; font-weight:400; color:var(--muted); }
+  .cm .good { background:color-mix(in srgb, var(--ok) 18%, transparent); }
+  .cm .wrong { background:color-mix(in srgb, var(--bad) 16%, transparent); }
+  .filters { display:flex; gap:8px; flex-wrap:wrap; margin:8px 0 10px; }
+  .filters button { font:inherit; font-size:13px; padding:5px 12px; border-radius:999px; border:1px solid var(--line);
+                    background:transparent; color:var(--fg); cursor:pointer; }
+  .filters button[aria-pressed=true] { background:var(--fg); color:var(--bg); border-color:var(--fg); }
+  .tablewrap { overflow-x:auto; }
+  table { border-collapse:collapse; width:100%; font-size:13px; }
+  th, td { text-align:left; padding:8px 10px; border-bottom:1px solid var(--line); vertical-align:top; }
+  th { color:var(--muted); font-weight:500; white-space:nowrap; }
+  td.num { text-align:right; font-variant-numeric:tabular-nums; white-space:nowrap; }
+  td.msg { min-width:260px; }
+  .bar { height:6px; border-radius:3px; background:var(--grid); margin-top:4px; min-width:60px; }
+  .bar span { display:block; height:100%; border-radius:3px; background:var(--bad); }
+  .pill { font-size:12px; padding:1px 8px; border-radius:999px; border:1px solid var(--line); white-space:nowrap; }
+  details summary { cursor:pointer; color:var(--muted); font-size:13px; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>Scam Detector &middot; <span id="runName"></span></h1>
+    <p class="sub" id="lede"></p>
+  </header>
+
+  <section class="tiles" id="tiles"></section>
+
+  <section class="row">
+    <div class="card">
+      <h2>Loss during training</h2>
+      <p class="note">Lower is better. Validation loss uses real messages the model never learns from. Point at the chart to read values.</p>
+      <div class="legend"><span><i style="background:var(--train)"></i>Train loss</span><span><i style="background:var(--val)"></i>Validation loss</span><span><i style="background:var(--muted);height:0;border-top:2px dashed var(--muted)"></i>Best model saved</span></div>
+      <div class="chart" id="loss"><div class="tip"></div></div>
+    </div>
+    <div class="card">
+      <h2>Right vs wrong on the test set</h2>
+      <p class="note">Each box counts real test messages.</p>
+      <div class="cm" id="cm" style="margin-top:14px"></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Every test mistake</h2>
+    <p class="note">Scam score is how sure the model was that the message is a scam. Above 50% it says scam.</p>
+    <div class="filters" id="filters">
+      <button data-f="all" aria-pressed="true">All</button>
+      <button data-f="scam">Missed scams</button>
+      <button data-f="safe">False alarms</button>
+    </div>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Message</th><th>Really</th><th>Model said</th><th>Source</th><th style="text-align:right">Scam score</th></tr></thead>
+      <tbody id="rows"></tbody>
+    </table></div>
+  </section>
+
+  <section class="card">
+    <details><summary>Training settings and each epoch</summary>
+      <div class="tablewrap" style="margin-top:10px"><table>
+        <thead><tr><th>Epoch</th><th style="text-align:right">Train loss</th><th style="text-align:right">Validation loss</th><th style="text-align:right">Seconds</th><th>Best so far</th></tr></thead>
+        <tbody id="epochs"></tbody>
+      </table></div>
+      <p class="note" id="settings"></p>
+    </details>
+  </section>
+</main>
+
+<script>
+const D = {"run": "run3", "settings": {"base_model": "models/distilbert-base-uncased", "max_len": 128, "batch_size": 16, "epochs": 4, "lr": 2e-05, "patience": 2, "seed": 42}, "stepsPerEpoch": 1324, "points": [{"step": 100, "train_loss": 0.6743295478820801, "val_loss": 0.598623336610563}, {"step": 200, "train_loss": 0.47204264283180236, "val_loss": 0.2180935320174218}, {"step": 300, "train_loss": 0.2767200201377273, "val_loss": 0.24846373444768285}, {"step": 400, "train_loss": 0.21182257529348136, "val_loss": 0.2372298100457015}, {"step": 500, "train_loss": 0.21955174757167698, "val_loss": 0.14600248772653396}, {"step": 600, "train_loss": 0.17517357194796204, "val_loss": 0.17139299961139973}, {"step": 700, "train_loss": 0.16476850597187875, "val_loss": 0.10854609293305725}, {"step": 800, "train_loss": 0.15341273248195647, "val_loss": 0.11471456586192383}, {"step": 900, "train_loss": 0.14672776175662874, "val_loss": 0.09018936355737939}, {"step": 1000, "train_loss": 0.15240007349289952, "val_loss": 0.10302315105287055}, {"step": 1100, "train_loss": 0.12605053410399705, "val_loss": 0.10889011035723942}, {"step": 1200, "train_loss": 0.13634069373831154, "val_loss": 0.09372040033633208}, {"step": 1300, "train_loss": 0.12512591657228767, "val_loss": 0.07532677177483729}, {"step": 1424, "train_loss": 0.08052942632697523, "val_loss": 0.08663957824682927}, {"step": 1524, "train_loss": 0.08019043382722885, "val_loss": 0.09938250167250204}, {"step": 1624, "train_loss": 0.07070374526549131, "val_loss": 0.15367501782489418}, {"step": 1724, "train_loss": 0.08177644946146756, "val_loss": 0.1053530219021377}, {"step": 1824, "train_loss": 0.08737763079814613, "val_loss": 0.08624182176393821}, {"step": 1924, "train_loss": 0.0835004749847576, "val_loss": 0.0732335399936326}, {"step": 2024, "train_loss": 0.08134372305124998, "val_loss": 0.08253254445383146}, {"step": 2124, "train_loss": 0.0661586065380834, "val_loss": 0.12553269027707306}, {"step": 2224, "train_loss": 0.05915628727292642, "val_loss": 0.08813973565201062}, {"step": 2324, "train_loss": 0.07251703643705695, "val_loss": 0.07629127184096199}, {"step": 2424, "train_loss": 0.059580638292245566, "val_loss": 0.07584968951214215}, {"step": 2524, "train_loss": 0.08032055674819276, "val_loss": 0.08547833684487872}, {"step": 2624, "train_loss": 0.054892148203216494, "val_loss": 0.15868872839020665}, {"step": 2748, "train_loss": 0.02990465287002735, "val_loss": 0.13273077263035118}, {"step": 2848, "train_loss": 0.037939013972645624, "val_loss": 0.07620462555909126}, {"step": 2948, "train_loss": 0.03717472073971294, "val_loss": 0.09409436621150025}, {"step": 3048, "train_loss": 0.03884934061905369, "val_loss": 0.06983161305754977}, {"step": 3148, "train_loss": 0.018607968551223167, "val_loss": 0.07328549344531737}, {"step": 3248, "train_loss": 0.03143435261270497, "val_loss": 0.1049794391353847}, {"step": 3348, "train_loss": 0.04319801621721126, "val_loss": 0.15198771837920672}, {"step": 3448, "train_loss": 0.027295672427862884, "val_loss": 0.09386462957330521}, {"step": 3548, "train_loss": 0.03466887052112724, "val_loss": 0.07933516455137249}, {"step": 3648, "train_loss": 0.0386577502428554, "val_loss": 0.11104895906844899}, {"step": 3748, "train_loss": 0.0317443342145998, "val_loss": 0.0947415376061936}, {"step": 3848, "train_loss": 0.027711532631656155, "val_loss": 0.08411166043531274}, {"step": 3948, "train_loss": 0.026616016341140494, "val_loss": 0.08759659736099475}], "epochs": [{"epoch": 1, "train_loss": 0.23107662684744185, "val_loss": 0.07696655719067118, "seconds": 214, "best": true}, {"epoch": 2, "train_loss": 0.07359320254322195, "val_loss": 0.09101877237115721, "seconds": 209, "best": false}, {"epoch": 3, "train_loss": 0.03210156337852031, "val_loss": 0.10044717387196846, "seconds": 211, "best": false}], "test": {"accuracy": 0.9771241830065359, "precision": 0.9942418426103646, "recall": 0.9727699530516432, "f1": 0.9833887043189369, "false_alarm_rate": 0.012903225806451613, "tp": 1036, "fn": 29, "fp": 6, "tn": 459, "rows": 1530}, "mistakes": [{"text": "Standard Bank App: OTP: <NUMBER>. Cash voucher created for <NUMBER>.00. Queries? <NUMBER>.", "label": "scam", "pred": "safe", "scam_prob": 0.003807088825851679, "source": "imc2025", "scam_type": "banking"}, {"text": "Y'ello! Your 1GB MTN EverydayGigs Bundle has been loaded.", "label": "scam", "pred": "safe", "scam_prob": 0.008162392303347588, "source": "imc2025", "scam_type": "telecom"}, {"text": "Check out My App: <URL>", "label": "scam", "pred": "safe", "scam_prob": 0.019650118425488472, "source": "imc2025", "scam_type": "others"}, {"text": "I'll call you later.", "label": "scam", "pred": "safe", "scam_prob": 0.0388653427362442, "source": "imc2025", "scam_type": "others"}, {"text": "Lily see the message and reply me Why are you so busy all the time don't you rest at night? \ud83c\udf77\ud83d\ude06:)", "label": "scam", "pred": "safe", "scam_prob": 0.04022365063428879, "source": "imc2025", "scam_type": "wrong number"}, {"text": "Ask for forgiveness from the Almighty God. He is the only one that gives and add no sorrows. Young man, save yourself while you still can.", "label": "scam", "pred": "safe", "scam_prob": 0.04103764891624451, "source": "imc2025", "scam_type": "others"}, {"text": "Cheese n Corn, Fresh Veggie", "label": "scam", "pred": "safe", "scam_prob": 0.04325650632381439, "source": "imc2025", "scam_type": "others"}, {"text": "Are you OK? Here's with work I just wanted this song Call Mmm mmm D C Xx", "label": "scam", "pred": "safe", "scam_prob": 0.06914859265089035, "source": "imc2025", "scam_type": "others"}, {"text": "Hey Mum!!! I've got a new phone XXX", "label": "scam", "pred": "safe", "scam_prob": 0.09809613227844238, "source": "imc2025", "scam_type": "hey mum/dad"}, {"text": "Co m e to our post office to get your delivery package.", "label": "scam", "pred": "safe", "scam_prob": 0.1263091117143631, "source": "imc2025", "scam_type": "delivery"}, {"text": "OMLOG E UPS HUB GA", "label": "scam", "pred": "safe", "scam_prob": 0.15883666276931763, "source": "imc2025", "scam_type": "delivery"}, {"text": "Fuck you scammer! I'll find you and I'm coming for you. \ud83d\udc80", "label": "scam", "pred": "safe", "scam_prob": 0.16790825128555298, "source": "imc2025", "scam_type": "others"}, {"text": "Using a capital 'i' instead of a lower case l", "label": "scam", "pred": "safe", "scam_prob": 0.170662060379982, "source": "imc2025", "scam_type": "others"}, {"text": "The IRS will never text you.", "label": "scam", "pred": "safe", "scam_prob": 0.17371128499507904, "source": "imc2025", "scam_type": "government"}, {"text": "Order confirmed: You can add more items until we START packing your order.", "label": "scam", "pred": "safe", "scam_prob": 0.18290908634662628, "source": "imc2025", "scam_type": "delivery"}, {"text": ", | need to know if you are available in a split second. | am at a meeting and limited to calls, but |am good to go with texts if that works. Need you to handle a task. Thanks", "label": "scam", "pred": "safe", "scam_prob": 0.20264558494091034, "source": "imc2025", "scam_type": "wrong number"}, {"text": "Off Road Warehouse: Hey there! We hope to see you soon at our ORW! Just a reminder, we are open PST and 9am-3pm PST! Looking for help? Give us a call at <PHONE_NUMBER>! Get directions: <URL>", "label": "scam", "pred": "safe", "scam_prob": 0.21731089055538177, "source": "imc2025", "scam_type": "others"}, {"text": "Don\u2019t get your heart broken by SMishing scams. The IRS will never text you.", "label": "scam", "pred": "safe", "scam_prob": 0.23288123309612274, "source": "imc2025", "scam_type": "government"}, {"text": "Wow! Astonishingly, first these fraudsters call you and when you catch their lie, they start abusing you", "label": "scam", "pred": "safe", "scam_prob": 0.2523159086704254, "source": "imc2025", "scam_type": "others"}, {"text": "Arriving : Your Amazon Fresh order for delivery.", "label": "scam", "pred": "safe", "scam_prob": 0.268559992313385, "source": "imc2025", "scam_type": "delivery"}, {"text": "Hope you still have this house available on facebook because i really want it so bad! https", "label": "scam", "pred": "safe", "scam_prob": 0.3247911334037781, "source": "imc2025", "scam_type": "others"}, {"text": "Hi cancellation for My SIM 1 has been successfully scheduled for end of this month and your final payment for this SIM will be processed on your selected date . To retract cancellation sign into my-rain on your rain app or go to <URL>. Thanks rain.", "label": "scam", "pred": "safe", "scam_prob": 0.33711811900138855, "source": "imc2025", "scam_type": "telecom"}, {"text": "Packed: Your Rajdhani Chakki Fresh ...+11 items have been packed. Track here <URL>", "label": "scam", "pred": "safe", "scam_prob": 0.34554725885391235, "source": "imc2025", "scam_type": "delivery"}, {"text": "FRM:ampbell SUBJ:the shadedEvie and MSG: kn6wde Please wait...", "label": "scam", "pred": "safe", "scam_prob": 0.3712879419326782, "source": "imc2025", "scam_type": "others"}, {"text": "for joining is passed in our company . Can get 3,000/ Day.", "label": "scam", "pred": "safe", "scam_prob": 0.3951185345649719, "source": "imc2025", "scam_type": "others"}, {"text": "GMAIL: Mailbox accessed from a new location or device. Wasn't you? Let us know: <URL>", "label": "scam", "pred": "safe", "scam_prob": 0.396793007850647, "source": "imc2025", "scam_type": "others"}, {"text": "Hi referral benefit amount of Rs.300 has been credited to your Tata Play account.", "label": "scam", "pred": "safe", "scam_prob": 0.40386998653411865, "source": "imc2025", "scam_type": "others"}, {"text": "So during another trip she now called and said network that she will do it I should resend my account number", "label": "scam", "pred": "safe", "scam_prob": 0.44396528601646423, "source": "imc2025", "scam_type": "others"}, {"text": "IT'S MY PLEASURE TO PARTNER WITH YOU IN ...", "label": "scam", "pred": "safe", "scam_prob": 0.4782785475254059, "source": "imc2025", "scam_type": "others"}, {"text": "Ofcourse I also upload some songs", "label": "safe", "pred": "scam", "scam_prob": 0.6166059970855713, "source": "mishra_soni", "scam_type": ""}, {"text": "He says hi and to get your back to uganda", "label": "safe", "pred": "scam", "scam_prob": 0.6642053723335266, "source": "mishra_soni", "scam_type": ""}, {"text": "Pls send me a comprehensive mail about who i'm paying, when and how much.", "label": "safe", "pred": "scam", "scam_prob": 0.6884364485740662, "source": "mishra_soni", "scam_type": ""}, {"text": "Sir, I am waiting for your call I have an urgent meeting later on..", "label": "safe", "pred": "scam", "scam_prob": 0.7415189146995544, "source": "mishra_soni", "scam_type": ""}, {"text": "You see the requirements please", "label": "safe", "pred": "scam", "scam_prob": 0.9250749349594116, "source": "mishra_soni", "scam_type": ""}, {"text": "Hi, Mobile no. <PHONE_NUMBER> has added you in their contact list on <URL> It s a great place to send free sms to people For more visit <URL>", "label": "safe", "pred": "scam", "scam_prob": 0.996304988861084, "source": "mishra_soni", "scam_type": ""}]};
+const pct = v => (v * 100).toFixed(1) + '%';
+const el = (tag, attrs = {}, text) => { const e = document.createElement(tag); for (const [k, v] of Object.entries(attrs)) e.setAttribute(k, v); if (text != null) e.textContent = text; return e; };
+const T = D.test;
+
+document.getElementById('runName').textContent = D.run;
+document.getElementById('lede').textContent =
+  `Caught ${T.tp} of ${T.tp + T.fn} scams and wrongly flagged ${T.fp} of ${T.fp + T.tn} safe messages, on ${T.rows} real test messages.`;
+
+// Score tiles
+const tiles = [['Accuracy', T.accuracy, 'all answers right'], ['Precision', T.precision, 'when it says scam, how often right'],
+  ['Recall', T.recall, 'share of scams caught'], ['F1', T.f1, 'balance of precision and recall'],
+  ['False alarm rate', T.false_alarm_rate, 'safe messages flagged as scam', true]];
+for (const [k, v, hint, bad] of tiles) {
+  const t = el('div', { class: 'card tile' + (bad ? ' bad' : '') });
+  t.append(el('div', { class: 'v' }, pct(v)), el('div', { class: 'k' }, k), el('div', { class: 'note' }, hint));
+  document.getElementById('tiles').append(t);
+}
+
+// Confusion matrix
+const cm = document.getElementById('cm');
+const cell = (n, of, cls, label) => { const c = el('div', { class: 'c ' + cls }, String(n)); c.append(el('small', {}, label + ' · ' + pct(n / of))); return c; };
+cm.append(el('div'), el('div', { class: 'h' }, 'Model said safe'), el('div', { class: 'h' }, 'Model said scam'));
+cm.append(el('div', { class: 'r' }, 'Really safe'), cell(T.tn, T.tn + T.fp, 'good', 'correct'), cell(T.fp, T.tn + T.fp, 'wrong', 'false alarm'));
+cm.append(el('div', { class: 'r' }, 'Really scam'), cell(T.fn, T.fn + T.tp, 'wrong', 'missed'), cell(T.tp, T.fn + T.tp, 'good', 'caught'));
+
+// Loss chart (inline SVG)
+function drawLoss() {
+  const box = document.getElementById('loss'), tip = box.querySelector('.tip');
+  box.querySelectorAll('svg').forEach(s => s.remove());
+  const W = Math.max(320, box.clientWidth), H = 300, m = { t: 12, r: 14, b: 32, l: 44 };
+  const pts = D.points.map(p => ({ x: p.step / D.stepsPerEpoch, step: p.step, train: p.train_loss, val: p.val_loss }));
+  const maxE = Math.max(Math.ceil(pts[pts.length - 1].x), 1);
+  const yMax = Math.ceil(Math.max(...pts.map(p => Math.max(p.train, p.val))) * 10) / 10;
+  const X = v => m.l + (v / maxE) * (W - m.l - m.r), Y = v => H - m.b - (v / yMax) * (H - m.t - m.b);
+  const NS = 'http://www.w3.org/2000/svg', s = document.createElementNS(NS, 'svg');
+  s.setAttribute('viewBox', `0 0 ${W} ${H}`); s.setAttribute('role', 'img');
+  s.setAttribute('aria-label', 'Line chart of train and validation loss across epochs');
+  const add = (tag, a) => { const e = document.createElementNS(NS, tag); for (const [k, v] of Object.entries(a)) e.setAttribute(k, v); s.append(e); return e; };
+  const g = add('g', { class: 'axis' });
+  for (let i = 0; i <= 5; i++) {
+    const v = yMax * i / 5, y = Y(v);
+    add('line', { x1: m.l, x2: W - m.r, y1: y, y2: y, stroke: 'var(--grid)' });
+    const t = document.createElementNS(NS, 'text'); t.setAttribute('x', m.l - 6); t.setAttribute('y', y + 4); t.setAttribute('text-anchor', 'end'); t.textContent = v.toFixed(2); g.append(t);
+  }
+  for (let e = 0; e <= maxE; e++) {
+    const t = document.createElementNS(NS, 'text'); t.setAttribute('x', X(e)); t.setAttribute('y', H - 10); t.setAttribute('text-anchor', 'middle'); t.textContent = e === 0 ? 'Start' : 'Epoch ' + e; g.append(t);
+  }
+  const best = D.epochs.filter(e => e.best).pop();
+  if (best) add('line', { x1: X(best.epoch), x2: X(best.epoch), y1: m.t, y2: H - m.b, stroke: 'var(--muted)', 'stroke-dasharray': '4 3' });
+  for (const [key, color] of [['train', 'var(--train)'], ['val', 'var(--val)']]) {
+    add('path', { d: pts.map((p, i) => (i ? 'L' : 'M') + X(p.x) + ',' + Y(p[key])).join(''), fill: 'none', stroke: color, 'stroke-width': 2 });
+    pts.forEach(p => add('circle', { cx: X(p.x), cy: Y(p[key]), r: 3, fill: color }));
+  }
+  const cross = add('line', { y1: m.t, y2: H - m.b, stroke: 'var(--muted)', visibility: 'hidden' });
+  const hit = add('rect', { x: m.l, y: m.t, width: W - m.l - m.r, height: H - m.t - m.b, fill: 'transparent' });
+  hit.addEventListener('pointermove', ev => {
+    const r = s.getBoundingClientRect(), xv = ((ev.clientX - r.left) * W / r.width - m.l) / (W - m.l - m.r) * maxE;
+    const p = pts.reduce((a, b) => Math.abs(b.x - xv) < Math.abs(a.x - xv) ? b : a);
+    cross.setAttribute('x1', X(p.x)); cross.setAttribute('x2', X(p.x)); cross.setAttribute('visibility', 'visible');
+    tip.textContent = ''; tip.append(el('div', {}, `Step ${p.step} · epoch ${p.x.toFixed(2)}`), el('div', {}, `Train loss ${p.train.toFixed(4)}`), el('div', {}, `Validation loss ${p.val.toFixed(4)}`));
+    tip.style.display = 'block';
+    const px = X(p.x) * r.width / W; tip.style.top = '30px';
+    tip.style.left = (px + 12 + tip.offsetWidth > box.clientWidth ? px - tip.offsetWidth - 12 : px + 12) + 'px';
+  });
+  hit.addEventListener('pointerleave', () => { tip.style.display = 'none'; cross.setAttribute('visibility', 'hidden'); });
+  box.prepend(s);
+}
+drawLoss();
+new ResizeObserver(drawLoss).observe(document.getElementById('loss'));
+
+// Mistakes table with filter
+function drawRows(f) {
+  const tb = document.getElementById('rows'); tb.textContent = '';
+  D.mistakes.filter(r => f === 'all' || r.label === f).forEach(r => {
+    const tr = el('tr');
+    tr.append(el('td', { class: 'msg' }, r.text), el('td', {}, r.label === 'scam' ? 'Scam' : 'Safe'));
+    const said = el('td'); said.append(el('span', { class: 'pill' }, r.pred === 'scam' ? 'Scam' : 'Safe')); tr.append(said);
+    tr.append(el('td', {}, r.source + (r.scam_type ? ' / ' + r.scam_type : '')));
+    const sc = el('td', { class: 'num' }, pct(r.scam_prob)); const b = el('div', { class: 'bar' }); const fill = el('span'); fill.style.width = (r.scam_prob * 100) + '%'; b.append(fill); sc.append(b); tr.append(sc);
+    tb.append(tr);
+  });
+}
+document.querySelectorAll('#filters button').forEach(b => b.addEventListener('click', () => {
+  document.querySelectorAll('#filters button').forEach(x => x.setAttribute('aria-pressed', x === b));
+  drawRows(b.dataset.f);
+}));
+drawRows('all');
+
+// Epochs + settings
+D.epochs.forEach(e => {
+  const tr = el('tr');
+  tr.append(el('td', {}, e.epoch), el('td', { class: 'num' }, e.train_loss.toFixed(4)), el('td', { class: 'num' }, e.val_loss.toFixed(4)), el('td', { class: 'num' }, e.seconds), el('td', {}, e.best ? '✓' : ''));
+  document.getElementById('epochs').append(tr);
+});
+const S = D.settings;
+document.getElementById('settings').textContent = `Base model ${S.base_model} · max length ${S.max_len} · batch ${S.batch_size} · up to ${S.epochs} epochs · learning rate ${S.lr} · patience ${S.patience} · seed ${S.seed}`;
+</script>
+</body>
+</html>
